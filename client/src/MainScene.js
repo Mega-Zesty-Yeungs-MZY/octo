@@ -1,4 +1,5 @@
 import io from 'socket.io-client';
+import player from './assets/player.png'
 
 export default class MainScene extends Phaser.Scene {
     constructor() {
@@ -7,7 +8,7 @@ export default class MainScene extends Phaser.Scene {
 
     preload() {
 
-        this.load.spritesheet('player', '/src/assets/player.png', { frameWidth: 32, frameHeight: 64 });
+        this.load.spritesheet('player', player, { frameWidth: 32, frameHeight: 64 });
         // this.load.setBaseURL('http://localhost:8080/');
     }
     create() {
