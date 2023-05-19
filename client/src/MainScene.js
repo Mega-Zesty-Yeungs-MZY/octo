@@ -1,15 +1,24 @@
+import io from 'socket.io-client';
+
 export default class MainScene extends Phaser.Scene {
     constructor() {
         super('MainScene');
     }
 
     preload() {
-        console.log('preload')
-        this.load.spritesheet('player', '../src/assets/player.png', { frameWidth: 32, frameHeight: 64 });
-        this.load.setBaseURL('http://127.0.0.1:5500/');
+
+        this.load.spritesheet('player', '/client/src/assets/player.png', { frameWidth: 32, frameHeight: 64 });
+        // this.load.setBaseURL('http://127.0.0.1:5500/');
     }
     create() {
-        console.log('create')
+
+        this.socket = io('http://localhost:3000');
+
+        this.socket.on('connect', function () {
+        	console.log('Connected!');
+        });
+
+
         this.player = this.add.image(400,300, 'player')
         this.player.setScale(2);
         this.inputKeys = this.input.keyboard.addKeys({
