@@ -10,6 +10,6 @@ io.on('connection', function (socket) {
     });
 });
 
-http.listen(8080, function () {
+http.listen(3000, function () {
     console.log('Server started!');
 });

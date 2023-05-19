@@ -7,12 +7,12 @@ export default class MainScene extends Phaser.Scene {
 
     preload() {
 
-        this.load.spritesheet('player', '/client/src/assets/player.png', { frameWidth: 32, frameHeight: 64 });
-        // this.load.setBaseURL('http://127.0.0.1:5500/');
+        this.load.spritesheet('player', '/src/assets/player.png', { frameWidth: 32, frameHeight: 64 });
+        // this.load.setBaseURL('http://localhost:8080/');
     }
     create() {
 
-        this.socket = io('http://localhost:3000');
+        this.socket = io('http://localhost:3000', { transports : ['websocket'] });
 
         this.socket.on('connect', function () {
         	console.log('Connected!');
@@ -31,7 +31,7 @@ export default class MainScene extends Phaser.Scene {
     }
     update() {
 
-        console.log('update')
+        // console.log('update')
         const speed = 2.5;
         let playerVelocity = new Phaser.Math.Vector2();
         if (this.inputKeys.left.isDown) {
