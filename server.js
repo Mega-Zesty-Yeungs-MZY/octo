@@ -1,15 +1,45 @@
-const server = require('express')();
+const server = require('express')(); 
 const http = require('http').createServer(server);
 const io = require('socket.io')(http);
+// Requirements
 
-io.on('connection', function (socket) {
+var players = {};
+/*
+Object that will store all connections to the server (players)
+Whether it needs to be replaced with Firebase may be a different story
+*/
+
+
+io.on('connection', function (socket) { // on connect event
     console.log('A user connected: ' + socket.id);
+
+
+    players[socket.id] = {
+        playerId : socket.id // create player entry in dictionary
+    };
+
+    //console.log(Object.keys(players).length);
+
+    socket.emit('currentPlayers', players);
+    // sends event to all existing players, about a new player
+
+    socket.broadcast.emit('newPlayer', players[socket.id]); 
+    // sends an event to the newPlayer, loads current sprites
+   
 
     socket.on('disconnect', function () {
         console.log('A user disconnected: ' + socket.id);
+        
+        delete players[socket.id];
+
+        io.emit('left', socket.id);
+        // remove player data and emit that they have left the game
     });
 });
 
 http.listen(3000, function () {
     console.log('Server started!');
 });
+
+
+
