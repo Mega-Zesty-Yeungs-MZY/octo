@@ -36,7 +36,7 @@
     "webpack-merge": "^4.2.2"
   },
   "dependencies": {
-    "findup-sync": "^0.1.2",
+    "findup-sync": "^5.0.0",
     "phaser": "^3.50.0"
   }
 }
