@@ -6,7 +6,7 @@ export default class Player extends Faceless {
     keyD;
   constructor(scene, x, y) {
     super(scene, x, y, 'player');
-
+    this.initAnimations();
     this.keyW = this.scene.input.keyboard.addKey('W');
     this.keyA = this.scene.input.keyboard.addKey('A');
     this.keyS = this.scene.input.keyboard.addKey('S');
@@ -14,6 +14,20 @@ export default class Player extends Faceless {
 
     this.setScale(2);
   }
+
+  initAnimations(){
+    this.scene.anims.create({
+        key: 'runUp',
+        frames: this.scene.anims.generateFrameNames('ru-player', {
+          prefix: 'runU-',
+          end: 1,
+        }),
+        frameRate: 8,
+      });
+
+  }
+
+
   update() {
     const speed = 2.5;
     let playerVelocity = new Phaser.Math.Vector2();
@@ -34,7 +48,7 @@ export default class Player extends Faceless {
     if (this.keyS.isDown) {
         playerVelocity.y = 1;
         this.checkFlip();
-        this.setFrame(1);
+        !this.anims.isPlaying && this.anims.play('runUp', true);
     }
     playerVelocity.normalize().scale(speed);
     this.x += playerVelocity.x;

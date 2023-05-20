@@ -22,14 +22,15 @@ export default class MainScene extends Phaser.Scene {
 
         this.socket.on('connect', function () {
             console.log('Connected!');
+            //console.log(self.socket.id);
         });
 
         this.socket.on('currentPlayers', function (players) {
             Object.keys(players).forEach(function (id) {
-               // if (players[id] === self.socket.id) {
-                 //   this.addPlayer(100, 100);
+               //if (players[id] === self.socket.id) { // issue here
+                 //console.log("die");
                 //}
-                console.log("This is supposed to add players. It does not.")
+                console.log("This is supposed to add players. It does not.");
             })
         })
 
