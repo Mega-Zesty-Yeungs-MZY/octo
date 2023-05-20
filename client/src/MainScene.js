@@ -1,5 +1,6 @@
 import io from 'socket.io-client';
-import player from './assets/player.png'
+import player from './assets/player.png';
+import player_atlas from './assets/player_atlas.json'
 import Player from './classes/Player.js'
 
 export default class MainScene extends Phaser.Scene {
@@ -13,7 +14,8 @@ export default class MainScene extends Phaser.Scene {
 
     preload() {
 
-        this.load.spritesheet('player', player, { frameWidth: 48, frameHeight: 48 });
+        //this.load.spritesheet('player', player, { frameWidth: 48, frameHeight: 48 });
+        this.load.atlas('player', player, player_atlas);
         // this.load.setBaseURL('http://localhost:8080/');
     }
     create() {
@@ -27,9 +29,9 @@ export default class MainScene extends Phaser.Scene {
 
         this.socket.on('currentPlayers', function (players) {
             Object.keys(players).forEach(function (id) {
-               //if (players[id] === self.socket.id) { // issue here
-                 //console.log("die");
-                //}
+               if (players[id] === self.socket.id) { // issue here
+                 console.log("die");
+            }
                 console.log("This is supposed to add players. It does not.");
             })
         })
