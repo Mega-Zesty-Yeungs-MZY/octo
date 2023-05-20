@@ -1,9 +1,14 @@
 import io from 'socket.io-client';
 import player from './assets/player.png'
+import Player from './classes/Player.js'
 
 export default class MainScene extends Phaser.Scene {
     constructor() {
         super('MainScene');
+    }
+
+    addPlayer(x, y) {
+        this.player = new Player(this, x, y);
     }
 
     preload() {
@@ -13,67 +18,46 @@ export default class MainScene extends Phaser.Scene {
     }
     create() {
 
-        this.socket = io('http://localhost:3000', { transports : ['websocket'] });
+        this.socket = io('http://localhost:3000', { transports: ['websocket'] });
 
         this.socket.on('connect', function () {
-        	console.log('Connected!');
+            console.log('Connected!');
         });
 
-        this.player = this.add.image(400,300, 'player')
-        this.player.setScale(2);
-        //! player animation
-        // this.anims.create({
-        //     key: 'idle',
-        //     frames: this.anims.generateFrameNumbers('player', { frames: [ 0, 1, 2, 3, 4 ] }),
-        //     frameRate: 4,
-        //     repeat: -1
-        // });
-        // this.player.play('idle');
+        this.socket.on('currentPlayers', function (players) {
+            Object.keys(players).forEach(function (id) {
+               // if (players[id] === self.socket.id) {
+                 //   this.addPlayer(100, 100);
+                //}
+                console.log("This is supposed to add players. It does not.")
+            })
+        })
 
-        //! input keys
-        this.inputKeys = this.input.keyboard.addKeys({
-            up: Phaser.Input.Keyboard.KeyCodes.W,
-            down: Phaser.Input.Keyboard.KeyCodes.S,
-            left: Phaser.Input.Keyboard.KeyCodes.A,
-            right: Phaser.Input.Keyboard.KeyCodes.D
-        });
-        
+        // TODO: Solve the error:
+        /*
+        ERROR
+        undefined is not an object (evaluating 'self.socket.id')
+        @
+        forEach@[native code]
+        @
+        @
+        emitEvent@
+        onevent@
+        onpacket@
+        onpacket@[native code]
+        @
+        @
+        promiseReactionJob@[native code]
+        */
+       // Implement adding players and movement. Should be good to go past that.
 
+        this.addPlayer(400, 300)
 
-        // Add a platform as a rectangle
-        const platform = this.add.rectangle(400, 500, 200, 20, 0x00ff00);
-        
-        // Enable physics for the platform
-        this.physics.add.existing(platform, true);
-        
-        // Make the platform immovable
-        platform.body.immovable = true;
-
+        // ALSO TODO: Implement class for platforms
     }
     update() {
+        this.player.update();
+        // replaces all movement
 
-        const speed = 2.5;
-        let playerVelocity = new Phaser.Math.Vector2();
-        if (this.inputKeys.left.isDown) {
-            playerVelocity.x = -1;
-            this.player.setFrame(7).setFlipX(true);
-
-        }
-        if (this.inputKeys.right.isDown) {
-            playerVelocity.x = 1;
-            this.player.setFrame(7).setFlipX(false);
-        } 
-        if (this.inputKeys.up.isDown) {
-            playerVelocity.y = -1;
-            this.player.setFrame(13);
-        }
-        if (this.inputKeys.down.isDown) {
-            playerVelocity.y = 1;
-            this.player.setFrame(1);
-        }
-        playerVelocity.normalize().scale(speed);
-        this.player.x += playerVelocity.x;
-        this.player.y += playerVelocity.y;
-        
     }
 }
