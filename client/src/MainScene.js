@@ -27,6 +27,10 @@ export default class MainScene extends Phaser.Scene {
             //console.log(self.socket.id);
         });
 
+
+        // declare variable called self and set it equal to "this"
+        const self = this;
+
         this.socket.on('currentPlayers', function (players) {
             Object.keys(players).forEach(function (id) {
                if (players[id] === self.socket.id) { // issue here
