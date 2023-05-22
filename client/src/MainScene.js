@@ -1,70 +1,74 @@
-import io from 'socket.io-client';
-import player from './assets/player.png';
-import player_atlas from './assets/player_atlas.json'
-import Player from './classes/Player.js'
-
 export default class MainScene extends Phaser.Scene {
     constructor() {
         super('MainScene');
-    }
-
-    addPlayer(x, y) {
-        this.player = new Player(this, x, y);
-    }
-
-    preload() {
-
-        //this.load.spritesheet('player', player, { frameWidth: 48, frameHeight: 48 });
-        this.load.atlas('player', player, player_atlas);
-        // this.load.setBaseURL('http://localhost:8080/');
+    } preload() {
+        console.log('preload')
+        this.load.spritesheet('player', '../client/src/assets/player.png', { frameWidth: 48, frameHeight: 48 }); this.load.setBaseURL('http://127.0.0.1:5500/');
     }
     create() {
-
-        this.socket = io('http://localhost:3000', { transports: ['websocket'] });
-
-        this.socket.on('connect', function () {
-            console.log('Connected!');
-            //console.log(self.socket.id);
+        //! background        //! Obstacle
+        this.obstacle = this.physics.add.sprite(400, 300, "obstacle");        //! player
+        this.player = this.add.sprite(300, 300, 'player')
+        this.player.setScale(2);
+        //! player animation
+        this.anims.create({
+            key: 'walkLR',
+            frames: this.anims.generateFrameNumbers('player', { start: 25, end: 29 }),
+            frameRate: 6,
+            repeat: -1
+        }); this.anims.create({
+            key: 'walkDOWN',
+            frames: this.anims.generateFrameNumbers('player', { start: 19, end: 23 }),
+            frameRate: 6,
+            repeat: -1
+        }); this.anims.create({
+            key: 'walkUP',
+            frames: this.anims.generateFrameNumbers('player', { start: 31, end: 35 }),
+            frameRate: 6,
+            repeat: -1
+        }); this.anims.create({
+            key: 'idle',
+            frames: this.anims.generateFrameNumbers('player', { start: 0, end: 5 }),
+            frameRate: 7,
+            repeat: -1
+        });        //! input keys
+        this.inputKeys = this.input.keyboard.addKeys({
+            up: Phaser.Input.Keyboard.KeyCodes.W,
+            down: Phaser.Input.Keyboard.KeyCodes.S,
+            left: Phaser.Input.Keyboard.KeyCodes.A,
+            right: Phaser.Input.Keyboard.KeyCodes.D
         });
-
-
-        // declare variable called self and set it equal to "this"
-        const self = this;
-
-        this.socket.on('currentPlayers', function (players) {
-            Object.keys(players).forEach(function (id) {
-               if (players[id] === self.socket.id) { // issue here
-                 console.log("die");
-            }
-                console.log("This is supposed to add players. It does not.");
-            })
-        })
-
-        // TODO: Solve the error:
-        /*
-        ERROR
-        undefined is not an object (evaluating 'self.socket.id')
-        @
-        forEach@[native code]
-        @
-        @
-        emitEvent@
-        onevent@
-        onpacket@
-        onpacket@[native code]
-        @
-        @
-        promiseReactionJob@[native code]
-        */
-       // Implement adding players and movement. Should be good to go past that.
-
-        this.addPlayer(400, 300)
-
-        // ALSO TODO: Implement class for platforms
     }
     update() {
-        this.player.update();
-        // replaces all movement
+        const speed = 2.5;
+        let playerVelocity = new Phaser.Math.Vector2();  
+        
+        //! walkLR animation (left and right)
+        if (this.inputKeys.left.isDown) {
+            playerVelocity.x = -1;
+            this.player.anims.play('walkLR', true).setFlipX(true);
+        } else if (this.inputKeys.right.isDown) {
+            playerVelocity.x = 1;
+            this.player.anims.play('walkLR', true).setFlipX(false);
+        } 
+        
+        //! walkUD animation (up and down)
+        if (this.inputKeys.up.isDown) {
+            playerVelocity.y = -1;
+            this.player.anims.play('walkUP', true);
+        } else if (this.inputKeys.down.isDown) {
+            playerVelocity.y = 1;
+            this.player.anims.play('walkDOWN', true);
+        }
+        
+        //! idle animation
+        if (playerVelocity.x === 0 && playerVelocity.y === 0) {
+            this.player.anims.play('idle', true);
+        }
 
+        //! normalize and scale the velocity so that player can't move faster along a diagonal
+        playerVelocity.normalize().scale(speed);
+        this.player.x += playerVelocity.x;
+        this.player.y += playerVelocity.y;
     }
 }
