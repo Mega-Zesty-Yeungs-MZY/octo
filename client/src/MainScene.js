@@ -1,3 +1,4 @@
+import io from 'socket.io-client';
 import player from './assets/player.png'
 
 export default class MainScene extends Phaser.Scene {
@@ -8,6 +9,22 @@ export default class MainScene extends Phaser.Scene {
         this.load.spritesheet('player', player, { frameWidth: 48, frameHeight: 48 }); this.load.setBaseURL('http://127.0.0.1:5500/');
     }
     create() {
+        this.socket = io('http://localhost:3000', { transports: ['websocket'] });
+
+        this.socket.on('connect', function () {
+            console.log('Connected!');
+            //console.log(self.socket.id);
+        });
+
+        this.socket.on('currentPlayers', function (players) {
+            Object.keys(players).forEach(function (id) {
+               //if (players[id] === self.socket.id) { // issue here
+                 //console.log("die");
+                //}
+                console.log("This is supposed to add players. It does not.");
+            })
+        })
+
         //! background        //! Obstacle
         this.obstacle = this.physics.add.sprite(400, 300, "obstacle");        //! player
         this.player = this.add.sprite(300, 300, 'player')
