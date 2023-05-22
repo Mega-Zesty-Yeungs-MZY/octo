@@ -1,9 +1,11 @@
+import player from './assets/player.png'
+
 export default class MainScene extends Phaser.Scene {
     constructor() {
         super('MainScene');
     } preload() {
         console.log('preload')
-        this.load.spritesheet('player', '../client/src/assets/player.png', { frameWidth: 48, frameHeight: 48 }); this.load.setBaseURL('http://127.0.0.1:5500/');
+        this.load.spritesheet('player', player, { frameWidth: 48, frameHeight: 48 }); this.load.setBaseURL('http://127.0.0.1:5500/');
     }
     create() {
         //! background        //! Obstacle
