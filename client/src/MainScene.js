@@ -29,7 +29,7 @@ export default class MainScene extends Phaser.Scene {
                 console.log("This is supposed to add players. It does not.");
             })
         })
-        
+
         this.player = new PlayerClass(this, 300, 300);
 
         //! background        
@@ -37,7 +37,17 @@ export default class MainScene extends Phaser.Scene {
         //! Obstacle
         this.obstacle = this.physics.add.sprite(400, 300, "obstacle");        
 
-       console.log("Occurs before player created")
+        console.log("Occurs before player created")
+        const staminaBarWidth = 200;
+        const staminaBarHeight = 20;
+        const staminaBarX = 400;
+        const staminaBarY = 550;
+        const staminaBarBackground = this.add.rectangle(staminaBarX, staminaBarY, staminaBarWidth, staminaBarHeight, 0x808080);
+        const staminaBarFill = this.add.rectangle(staminaBarX - staminaBarWidth / 2, staminaBarY, 0, staminaBarHeight, 0x00ff00);
+        this.staminaMaxWidth = staminaBarWidth;
+        this.currentStamina = staminaBarWidth;
+        this.staminaBarFill = staminaBarFill;
+
        
     }
     update() {
