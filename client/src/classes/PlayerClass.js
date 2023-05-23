@@ -5,8 +5,8 @@ import Faceless from './Faceless.js';
      keyS;
      keyD;
    constructor(scene, x, y) {
-     super(scene, x, y, 'player', 0);
 
+     super(scene, x, y, 'player', 0);
      this.setScale(2);
      this.anims.create({
         key: 'walkLR',
@@ -34,18 +34,11 @@ import Faceless from './Faceless.js';
     this.keyA = this.scene.input.keyboard.addKey('A');
     this.keyS = this.scene.input.keyboard.addKey('S');
     this.keyD = this.scene.input.keyboard.addKey('D');
-
-    /*
-    this.inputKeys = this.scene.input.keyboard.addKeys({
-        up: Phaser.Input.Keyboard.KeyCodes.W,
-        down: Phaser.Input.Keyboard.KeyCodes.S,
-        left: Phaser.Input.Keyboard.KeyCodes.A,
-        right: Phaser.Input.Keyboard.KeyCodes.D
-    });
-    */
    }
+
+
    update() {
-    const speed = 5;
+    const speed = 2.5;
     let playerVelocity = new Phaser.Math.Vector2();  
     
     //! walkLR animation (left and right)
