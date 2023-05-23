@@ -9,7 +9,7 @@ export default class MainScene extends Phaser.Scene {
         this.load.spritesheet('player', player, { frameWidth: 48, frameHeight: 48 }); this.load.setBaseURL('http://127.0.0.1:5500/');
     }
     create() {
-        this.socket = io('http://localhost:3000', { transports: ['websocket'] });
+        this.socket = io('http://localhost:8080', { transports: ['websocket'] });
 
         this.socket.on('connect', function () {
             console.log('Connected!');
@@ -25,10 +25,15 @@ export default class MainScene extends Phaser.Scene {
             })
         })
 
-        //! background        //! Obstacle
-        this.obstacle = this.physics.add.sprite(400, 300, "obstacle");        //! player
+        //! background        
+        
+        //! Obstacle
+        this.obstacle = this.physics.add.sprite(400, 300, "obstacle");        
+        
+        //! player
         this.player = this.add.sprite(300, 300, 'player')
         this.player.setScale(2);
+        
         //! player animation
         this.anims.create({
             key: 'walkLR',
@@ -50,7 +55,9 @@ export default class MainScene extends Phaser.Scene {
             frames: this.anims.generateFrameNumbers('player', { start: 0, end: 5 }),
             frameRate: 7,
             repeat: -1
-        });        //! input keys
+        });        
+        
+        //! input keys
         this.inputKeys = this.input.keyboard.addKeys({
             up: Phaser.Input.Keyboard.KeyCodes.W,
             down: Phaser.Input.Keyboard.KeyCodes.S,
@@ -65,10 +72,16 @@ export default class MainScene extends Phaser.Scene {
         //! walkLR animation (left and right)
         if (this.inputKeys.left.isDown) {
             playerVelocity.x = -1;
-            this.player.anims.play('walkLR', true).setFlipX(true);
-        } else if (this.inputKeys.right.isDown) {
+            
+            if (!this.inputKeys.up.isDown && !this.inputKeys.down.isDown) {
+                this.player.anims.play('walkLR', true).setFlipX(true);
+            }
+        }
+        if (this.inputKeys.right.isDown) {
             playerVelocity.x = 1;
-            this.player.anims.play('walkLR', true).setFlipX(false);
+            if (!this.inputKeys.up.isDown && !this.inputKeys.down.isDown) {
+                this.player.anims.play('walkLR', true).setFlipX(false);
+            }
         } 
         
         //! walkUD animation (up and down)
