@@ -1,5 +1,6 @@
 import io from 'socket.io-client';
-import player from './assets/player.png'
+import player from './assets/player.png';
+import PlayerClass from './classes/PlayerClass.js';
 
 export default class MainScene extends Phaser.Scene {
     constructor() {
@@ -17,20 +18,22 @@ export default class MainScene extends Phaser.Scene {
         });
 
         this.socket.on('currentPlayers', function (players) {
+            
+
             Object.keys(players).forEach(function (id) {
-               //if (players[id] === self.socket.id) { // issue here
-                 //console.log("die");
-                //}
+               if (players[id] === self.socket.id) { // issue here
+                 console.log("die");
+                }
                 console.log("This is supposed to add players. It does not.");
             })
         })
+        
+        console.log(typeof(new PlayerClass(this, 100, 100)));
 
-        //! background        
-        
-        //! Obstacle
-        this.obstacle = this.physics.add.sprite(400, 300, "obstacle");        
-        
-        //! player
+        const player = new PlayerClass(this, 300, 300);
+
+        //! background        //! Obstacle
+        this.obstacle = this.physics.add.sprite(400, 300, "obstacle");        //! player
         this.player = this.add.sprite(300, 300, 'player')
         this.player.setScale(2);
         
@@ -64,8 +67,13 @@ export default class MainScene extends Phaser.Scene {
             left: Phaser.Input.Keyboard.KeyCodes.A,
             right: Phaser.Input.Keyboard.KeyCodes.D
         });
+        */
+       console.log("Occurs before player created")
+       
     }
     update() {
+        this.player.update();        
+        /*
         const speed = 2.5;
         let playerVelocity = new Phaser.Math.Vector2();  
         
@@ -102,5 +110,6 @@ export default class MainScene extends Phaser.Scene {
         playerVelocity.normalize().scale(speed);
         this.player.x += playerVelocity.x;
         this.player.y += playerVelocity.y;
+        */
     }
 }
