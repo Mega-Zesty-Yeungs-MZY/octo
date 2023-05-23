@@ -84,7 +84,7 @@ let sprintaccel = 1;
         this.anims.play('idle', true);
     }
 
-    if (this.keySHIFT.isDown) {
+    if (this.keySHIFT.isDown && (playerVelocity.x != 0 || playerVelocity.y != 0)) {
         isSprinting = true;
         sprintaccel = sprintaccel >= sprintMultiplier? sprintMultiplier : sprintaccel + 0.1;
         console.log("accelerating" + sprintaccel);
@@ -93,6 +93,7 @@ let sprintaccel = 1;
         sprintaccel = sprintaccel <= 1? 1 : sprintaccel - 0.1;
         console.log("decelerating" + sprintaccel)
     }
+
 
     //! normalize and scale the velocity so that player can't move faster along a diagonal
     playerVelocity.normalize().scale(sprintaccel * speed);
