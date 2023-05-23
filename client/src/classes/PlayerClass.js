@@ -49,22 +49,34 @@ import Faceless from './Faceless.js';
     let playerVelocity = new Phaser.Math.Vector2();  
     
     //! walkLR animation (left and right)
-    if (this.keyA.isDown) {
-        playerVelocity.x = -1;
-        this.anims.play('walkLR', true).setFlipX(true);
-    } else if (this.keyD.isDown) {
-        playerVelocity.x = 1;
-        this.anims.play('walkLR', true).setFlipX(false);
-    } 
+    switch (true) {
+        case (this.keyA.isDown && !this.keyD.isDown):
+            playerVelocity.x = -1;
+            if (!this.keyW.isDown && !this.keyS.isDown) {
+                this.anims.play('walkLR', true).setFlipX(true);
+            }
+            break;
+        case (this.keyD.isDown && !this.keyA.isDown):
+            playerVelocity.x = 1;
+            if (!this.keyW.isDown && !this.keyS.isDown) {
+                this.anims.play('walkLR', true).setFlipX(false);
+            }
+            break;
+    }
+    
     
     //! walkUD animation (up and down)
-    if (this.keyW.isDown) {
-        playerVelocity.y = -1;
-        this.anims.play('walkUP', true);
-    } else if (this.keyS.isDown) {
-        playerVelocity.y = 1;
-        this.anims.play('walkDOWN', true);
+    switch (true) {
+        case (this.keyW.isDown && !this.keyS.isDown):
+            playerVelocity.y = -1;
+            this.anims.play('walkUP', true);
+            break;
+        case (this.keyS.isDown && !this.keyW.isDown):
+            playerVelocity.y = 1;
+            this.anims.play('walkDOWN', true);
+            break;
     }
+
     
     //! idle animation
     if (playerVelocity.x === 0 && playerVelocity.y === 0) {
