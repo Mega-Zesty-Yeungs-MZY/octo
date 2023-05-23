@@ -7,7 +7,8 @@ export default class MainScene extends Phaser.Scene {
         super('MainScene');
     } preload() {
         console.log('preload')
-        this.load.spritesheet('player', player, { frameWidth: 48, frameHeight: 48 }); this.load.setBaseURL('http://127.0.0.1:5500/');
+        this.load.spritesheet('player', player, { frameWidth: 48, frameHeight: 48 }); 
+        
     }
     create() {
         this.socket = io('http://localhost:8080', { transports: ['websocket'] });
@@ -30,9 +31,10 @@ export default class MainScene extends Phaser.Scene {
         
         this.player = new PlayerClass(this, 300, 300);
 
-        //! background        //! Obstacle
+        //! background        
+        
+        //! Obstacle
         this.obstacle = this.physics.add.sprite(400, 300, "obstacle");        
-    
 
        console.log("Occurs before player created")
        
