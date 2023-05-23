@@ -11,6 +11,7 @@ export default class MainScene extends Phaser.Scene {
         
     }
     create() {
+        const self = this;
         this.socket = io('http://localhost:3000', { transports: ['websocket'] });
 
         this.socket.on('connect', function () {
