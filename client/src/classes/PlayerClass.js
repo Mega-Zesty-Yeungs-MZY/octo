@@ -1,5 +1,7 @@
 import Faceless from './Faceless.js';
 let sprintaccel = 1;
+let staminapts = 100;
+let staminaspent = false;
  export default class PlayerClass extends Faceless {
      keyW;
      keyA;
@@ -84,22 +86,34 @@ let sprintaccel = 1;
         this.anims.play('idle', true);
     }
 
-    if (this.keySHIFT.isDown && (playerVelocity.x != 0 || playerVelocity.y != 0)) {
+    if (this.keySHIFT.isDown && (playerVelocity.x != 0 || playerVelocity.y != 0) && !staminaspent) {
         isSprinting = true;
         sprintaccel = sprintaccel >= sprintMultiplier? sprintMultiplier : sprintaccel + 0.1;
         console.log("accelerating" + sprintaccel);
+        staminapts = staminapts <= 0? 0 : staminapts - 1
+        console.log("stamina: " + staminapts)
     } else {
         isSprinting = false;
         sprintaccel = sprintaccel <= 1? 1 : sprintaccel - 0.1;
         console.log("decelerating" + sprintaccel)
+        staminapts = staminapts >= 100? 100 : staminapts + 1
+        console.log("stamina: " + staminapts)
     }
+
+    if (staminapts == 0) {
+        staminaspent = true;
+    } else if (staminapts == 100) {
+        staminaspent = false;
+    }
+
+
 
 
     //! normalize and scale the velocity so that player can't move faster along a diagonal
     playerVelocity.normalize().scale(sprintaccel * speed);
     this.x += playerVelocity.x;
     this.y += playerVelocity.y;
-    
+
 
 
 //     const staminaCostX = Math.abs(playerVelocity.x) * (isSprinting ? sprintStaminaCost : staminaCost);
