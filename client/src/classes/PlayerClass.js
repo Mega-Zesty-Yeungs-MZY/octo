@@ -45,35 +45,35 @@ import Faceless from './Faceless.js';
     */
    }
    update() {
-    const speed = 2.5;
+    const speed = 5;
     let playerVelocity = new Phaser.Math.Vector2();  
     
     //! walkLR animation (left and right)
     if (this.keyA.isDown) {
         playerVelocity.x = -1;
-        this.player.anims.play('walkLR', true).setFlipX(true);
+        this.anims.play('walkLR', true).setFlipX(true);
     } else if (this.keyD.isDown) {
         playerVelocity.x = 1;
-        this.player.anims.play('walkLR', true).setFlipX(false);
+        this.anims.play('walkLR', true).setFlipX(false);
     } 
     
     //! walkUD animation (up and down)
     if (this.keyW.isDown) {
         playerVelocity.y = -1;
-        this.player.anims.play('walkUP', true);
+        this.anims.play('walkUP', true);
     } else if (this.keyS.isDown) {
         playerVelocity.y = 1;
-        this.player.anims.play('walkDOWN', true);
+        this.anims.play('walkDOWN', true);
     }
     
     //! idle animation
     if (playerVelocity.x === 0 && playerVelocity.y === 0) {
-        this.player.anims.play('idle', true);
+        this.anims.play('idle', true);
     }
 
     //! normalize and scale the velocity so that player can't move faster along a diagonal
     playerVelocity.normalize().scale(speed);
-    this.player.x += playerVelocity.x;
-    this.player.y += playerVelocity.y;
+    this.x += playerVelocity.x;
+    this.y += playerVelocity.y;
  }
 }

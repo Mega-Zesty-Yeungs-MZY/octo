@@ -10,6 +10,8 @@ export default class MainScene extends Phaser.Scene {
         this.load.spritesheet('player', player, { frameWidth: 48, frameHeight: 48 }); this.load.setBaseURL('http://127.0.0.1:5500/');
     }
     create() {
+
+        this.player = new PlayerClass(this, 300, 300);
         const self = this;
         this.socket = io('http://localhost:3000', { transports: ['websocket'] });
         
@@ -71,7 +73,7 @@ export default class MainScene extends Phaser.Scene {
        
     }
     update() {
-        player.update();
+        this.player.update();        
         /*
         const speed = 2.5;
         let playerVelocity = new Phaser.Math.Vector2();  
