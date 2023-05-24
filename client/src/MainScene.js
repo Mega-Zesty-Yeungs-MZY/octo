@@ -1,10 +1,12 @@
 import io from 'socket.io-client';
 import player from './assets/player.png';
 import PlayerClass from './classes/PlayerClass.js';
+import Timer from './classes/Timer.js';
 
 export default class MainScene extends Phaser.Scene {
     constructor() {
         super('MainScene');
+        this.timer = null;
     } preload() {
         console.log('preload')
         this.load.spritesheet('player', player, { frameWidth: 48, frameHeight: 48 }); 
@@ -48,9 +50,23 @@ export default class MainScene extends Phaser.Scene {
         this.currentStamina = staminaBarWidth;
         this.staminaBarFill = staminaBarFill;
 
-       
+        //! timer
+        // Create the Timer instance
+        this.timer = new Timer(this, 5000, this.timerCallback);
+
+        // Create and position the timer text
+        const timerTextStyle = { font: '24px Arial', fill: '#ffffff' };
+        this.timer.createTimerText(10, 10, timerTextStyle);
+
+        // Start the timer
+        this.timer.start();
     }
     update() {
-        this.player.update();        
+        this.player.update();       
+        this.timer.updateTimerText(); 
+    }
+    timerCallback() {
+        // This function will be called when the timer duration is reached
+        console.log('Timer completed!');
     }
 }
