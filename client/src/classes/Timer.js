@@ -33,31 +33,3 @@ export default class Timer {
       }
     }
   }
-  
-// In MainScene.js add the following code
-// import the following:
-// import Timer from './classes/Timer.js';
-
-// add this to constructor:
-// this.timer = null;
-
-// in create()
-//      //! timer
-//    // Create the Timer instance
-//    this.timer = new Timer(this, 5000, this.timerCallback);
-
-//    // Create and position the timer text
-//    const timerTextStyle = { font: '24px Arial', fill: '#ffffff' };
-//    this.timer.createTimerText(10, 10, timerTextStyle);
-
-//    // Start the timer
-//    this.timer.start();
-
-// in update()
-// this.timer.updateTimerText();
-
-// under update add a new function:
-// timerCallback() {
-//     // This function will be called when the timer duration is reached
-//     console.log('Timer completed!');
-//   }
