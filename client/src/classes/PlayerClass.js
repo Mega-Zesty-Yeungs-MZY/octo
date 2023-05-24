@@ -96,7 +96,7 @@ let staminaspent = false;
         isSprinting = false;
         sprintaccel = sprintaccel <= 1? 1 : sprintaccel - 0.1;
         console.log("decelerating" + sprintaccel)
-        staminapts = staminapts >= 100? 100 : staminapts + 1
+        staminapts = staminapts >= 100? 100 : staminapts + 0.7;
         console.log("stamina: " + staminapts)
     }
 
