@@ -17,6 +17,13 @@ export default class Timer {
         this.timerText.setText(`Time: ${remainingTime.toFixed(2)}`);
       }
     }
+    
+    getCurrentTime() {
+      if (this.timerEvent) {
+        return Math.max(0, this.duration - this.timerEvent.getElapsed());
+      }
+      return 0;
+    }
   
     start() {
       this.timerEvent = this.scene.time.addEvent({

@@ -64,6 +64,10 @@ export default class MainScene extends Phaser.Scene {
     update() {
         this.player.update();       
         this.timer.updateTimerText(); 
+
+        // Retrieve and log the current time of the timer
+        const currentTime = this.timer.getCurrentTime();
+        console.log('Current time:', currentTime.toFixed(2));
     }
     timerCallback() {
         // This function will be called when the timer duration is reached
