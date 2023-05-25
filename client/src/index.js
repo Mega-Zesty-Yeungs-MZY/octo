@@ -1,11 +1,11 @@
 import MainScene from "./MainScene.js";
-
+import GameScene from "./GameScene.js";
 const config = {
     width: 1200,
     height: 800,
     backgroundColor: '#333333',
     type: Phaser.AUTO,
-    scene: [MainScene],
+    scene: [MainScene, GameScene],
     physics: {
         default: 'arcade',
         matter: {

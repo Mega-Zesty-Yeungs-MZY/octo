@@ -6,29 +6,34 @@ import Faceless from './Faceless.js';
      keyD;
    constructor(scene, x, y) {
 
-     super(scene, x, y, 'player', 0);
-     this.setScale(2);
-     this.anims.create({
+    super(scene, x, y, 'player', 0);
+    this.setScale(2);
+    this.anims.create({
         key: 'walkLR',
         frames: this.anims.generateFrameNumbers('player', { start: 25, end: 29 }),
         frameRate: 6,
         repeat: -1
-    }); this.anims.create({
+    }); 
+    this.anims.create({
         key: 'walkDOWN',
         frames: this.anims.generateFrameNumbers('player', { start: 19, end: 23 }),
         frameRate: 6,
         repeat: -1
-    }); this.anims.create({
+    }); 
+    this.anims.create({
         key: 'walkUP',
         frames: this.anims.generateFrameNumbers('player', { start: 31, end: 35 }),
         frameRate: 6,
         repeat: -1
-    }); this.anims.create({
+    }); 
+    this.anims.create({
         key: 'idle',
         frames: this.anims.generateFrameNumbers('player', { start: 0, end: 5 }),
         frameRate: 7,
         repeat: -1
-    });        //! input keys
+    });        
+    
+    //! input keys
 
     this.keyW = this.scene.input.keyboard.addKey('W');
     this.keyA = this.scene.input.keyboard.addKey('A');
