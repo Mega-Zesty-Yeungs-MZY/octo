@@ -72,5 +72,6 @@ export default class MainScene extends Phaser.Scene {
     timerCallback() {
         // This function will be called when the timer duration is reached
         console.log('Timer completed!');
+        this.timer.start()
     }
 }
