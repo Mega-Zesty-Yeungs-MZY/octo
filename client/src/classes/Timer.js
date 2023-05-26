@@ -1,5 +1,5 @@
 export default class Timer {
-    constructor(scene, duration, callback) {
+    constructor(scene, duration, callback) { //location should be an array defined as [x,y]
       this.scene = scene;
       this.duration = duration;
       this.callback = callback;

@@ -5,6 +5,8 @@ import obstacle from './assets/obstacle.png'
 import ObstacleClass from './classes/ObstaclesClass.js'
 import PlayerClass from './classes/PlayerClass.js';
 import Timer from './classes/Timer.js';
+import redLight from './assets/red-light.png';
+import greenLight from './assets/Green-light.png';
 
 export default class MainScene extends Phaser.Scene {
     constructor() {
@@ -16,6 +18,8 @@ export default class MainScene extends Phaser.Scene {
         this.load.spritesheet('player', player, { frameWidth: 48, frameHeight: 48 }); 
         this.load.image('grass', background);
         this.load.image('obstacle', obstacle)
+        this.load.image('red', redLight)
+        this.load.image('green', greenLight)
     }
 
     
@@ -47,9 +51,9 @@ export default class MainScene extends Phaser.Scene {
         this.socket.on('newPlayer', function (playerInfo) {
             self.addOtherPlayers(playerInfo);
           });
-          this.socket.on('disconnect', function (playerId) {
-            self.otherPlayers.getChildren().forEach(function (otherPlayer) {
-              if (playerId === otherPlayer.playerId) {
+          this.socket.on('left', function (identity) {
+            self.otherPlayersGroup.getChildren().forEach(function (otherPlayer) {
+              if (identity === otherPlayer.playerId) {
                 otherPlayer.destroy();
               }
             });
@@ -94,6 +98,8 @@ export default class MainScene extends Phaser.Scene {
         // Create and position the timer text
         const timerTextStyle = { font: '24px Arial', fill: '#ffffff' };
         this.timer.createTimerText(10, 10, timerTextStyle);
+        this.light = this.add.image(20, 60, 'red')
+        this.light.setScale(0.2, 0.2)
         
         // Start the timer
         this.timer.start();
@@ -138,6 +144,13 @@ export default class MainScene extends Phaser.Scene {
     timerCallback() {
         // This function will be called when the timer duration is reached
         this.redLight = ! this.redLight;
+        if (this.redLight == false){
+            this.light = this.add.image(20, 60, 'green')
+            this.light.setScale(0.2, 0.2)
+        } else{
+            this.light = this.add.image(20, 60, 'red')
+            this.light.setScale(0.2, 0.2)
+        }
         console.log('redlight: ', this.redLight);
         this.timer.start()
     }
