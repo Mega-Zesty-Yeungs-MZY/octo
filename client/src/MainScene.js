@@ -1,6 +1,8 @@
 import io from 'socket.io-client';
 import background from './assets/jungle tileset.png';
 import player from './assets/player.png';
+import obstacle from './assets/obstacle.png'
+import ObstacleClass from './classes/ObstaclesClass.js'
 import PlayerClass from './classes/PlayerClass.js';
 import Timer from './classes/Timer.js';
 
@@ -62,7 +64,7 @@ export default class MainScene extends Phaser.Scene {
 
        //this.cameras.main.startFollow(this.player)
 
-        this.obstacle = this.physics.add.sprite(400, 300, "obstacle");        
+        this.obstacle = this.physics.add.sprite(400, 300, 'obstacle');        
 
         const staminaBarWidth = 200;
         const staminaBarHeight = 20;
