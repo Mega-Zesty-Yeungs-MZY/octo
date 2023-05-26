@@ -1,5 +1,4 @@
 import io from 'socket.io-client';
-import background from './assets/jungle tileset.png';
 import player from './assets/player.png';
 import PlayerClass from './classes/PlayerClass.js';
 import Timer from './classes/Timer.js';
@@ -9,14 +8,9 @@ export default class MainScene extends Phaser.Scene {
         super('MainScene');
         this.timer = null;
     } preload() {
-
-        const gameHeight = this.game.config.height;
-        const gameWidth = this.game.config.width;
-
         console.log('preload')
         this.load.spritesheet('player', player, { frameWidth: 48, frameHeight: 48 }); 
-        this.load.image('grass', background);
-        // this.load.tilemapTiledJSON('map', map);
+        
     }
     create() {
         const self = this;
@@ -27,38 +21,43 @@ export default class MainScene extends Phaser.Scene {
             //console.log(self.socket.id);
         });
 
-        this.socket.on('currentPlayers', function (players) {
-            
+        this.otherPlayersGroup = this.physics.add.group();
 
+        this.socket.on('currentPlayers', function (players) {
             Object.keys(players).forEach(function (id) {
-               if (players[id] === self.socket.id) { // issue here
-                 console.log("die");
+                if (players[id].playerId === self.socket.id) { // issue here
+                    self.addPlayer(players[id]);
+                } else {
+                    self.addOtherPlayers(players[id]);
                 }
-                console.log("This is supposed to add players. It does not.");
             })
+        });
+        this.socket.on('newPlayer', function (playerInfo) {
+            self.addOtherPlayers(playerInfo);
+          });
+          this.socket.on('disconnect', function (playerId) {
+            self.otherPlayers.getChildren().forEach(function (otherPlayer) {
+              if (playerId === otherPlayer.playerId) {
+                otherPlayer.destroy();
+              }
+            });
+          });
+
+       
+        this.socket.on('playerMoved', function (playerInfo){
+            self.otherPlayersGroup.getChildren().forEach(function(otherPlayer){
+                if(playerInfo.playerId === otherPlayer.playerId) {
+                    otherPlayer.setPosition(playerInfo.x, playerInfo.y);
+                }
+            })
+            console.log("player movement tracked");
         })
 
-        this.player = new PlayerClass(this, 300, 300);
-
-        //! background
-        // this.background = this.add.tileSprite(0, 0, 800, 600, 'grass').setOrigin(0, 0);  
-             
-        // const grass = this.add.sprite(0, 0, 'grass', '10')
-        // const map = this.make.tilemap({ key: 'map' });
-        // const tileset = map.addTilesetImage('jungle', 'grass', 32, 32);
-        // const tileWidth = map.tileWidth;
-        // const tileHeight = map.tileHeight;
-        // const mapWidth = map.width;
-        // const mapHeight = map.height;
-        // const mapPx = mapWidth * tileWidth;
-        // const mapPy = mapHeight * tileHeight;
-
-        // const layer1 = this.add.tileSprite(0, 0, 800, 600, 'grass').setOrigin(0, 0);
-
+        //! background        
+        
         //! Obstacle
         this.obstacle = this.physics.add.sprite(400, 300, "obstacle");        
 
-        console.log("Occurs before player created")
         const staminaBarWidth = 200;
         const staminaBarHeight = 20;
         const staminaBarX = 400;
@@ -81,16 +80,37 @@ export default class MainScene extends Phaser.Scene {
         this.timer.start();
     }
     update() {
-        this.player.update();       
-        this.timer.updateTimerText(); 
+        if (this.player) { // Check if player object is defined before updating
+            this.player.update();
 
-        // Retrieve and log the current time of the timer
-        const currentTime = this.timer.getCurrentTime();
-        console.log('Current time:', currentTime.toFixed(2));
+            var x = this.player.x;
+            var y = this.player.y;
+
+            if (this.player.oldPosition && (x !== this.player.oldPosition.x || y !== this.player.oldPosition.y)){
+                console.log("emitted!");
+                this.socket.emit('heDothMoveth', {x : this.player.x, y : this.player.y});
+            }
+
+            this.player.oldPosition = {
+                x : this.player.x,
+                y: this.player.y
+            };
+        }  
+ 
+        this.timer.updateTimerText(); 
     }
     timerCallback() {
         // This function will be called when the timer duration is reached
         console.log('Timer completed!');
-        this.timer.start()
+    }
+    addPlayer(playerInfo){
+        this.player = new PlayerClass(this, 300, 300, playerInfo.playerId);
+    }
+    addOtherPlayers(playerInfo){
+        const otherplayer = new PlayerClass(this, 300, 300);
+
+        otherplayer.playerId = playerInfo.playerId;
+        this.otherPlayersGroup.add(otherplayer);
+
     }
 }

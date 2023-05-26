@@ -7,9 +7,10 @@ let staminaspent = false;
      keyA;
      keyS;
      keyD;
-   constructor(scene, x, y) {
+   constructor(scene, x, y, id) {
 
     super(scene, x, y, 'player', 0);
+    this.playerIdentity = id;
     this.setScale(2);
     this.anims.create({
         key: 'walkLR',
@@ -94,15 +95,11 @@ let staminaspent = false;
     if (this.keySHIFT.isDown && (playerVelocity.x != 0 || playerVelocity.y != 0) && !staminaspent) {
         isSprinting = true;
         sprintaccel = sprintaccel >= sprintMultiplier? sprintMultiplier : sprintaccel + 0.1;
-        console.log("accelerating" + sprintaccel);
         staminapts = staminapts <= 0? 0 : staminapts - 1
-        console.log("stamina: " + staminapts)
     } else {
         isSprinting = false;
         sprintaccel = sprintaccel <= 1? 1 : sprintaccel - 0.1;
-        console.log("decelerating" + sprintaccel)
         staminapts = staminapts >= 100? 100 : staminapts + 0.7;
-        console.log("stamina: " + staminapts)
     }
 
     if (staminapts == 0) {
@@ -120,36 +117,5 @@ let staminaspent = false;
     this.y += playerVelocity.y;
 
 
-
-//     const staminaCostX = Math.abs(playerVelocity.x) * (isSprinting ? sprintStaminaCost : staminaCost);
-//     const staminaCostY = Math.abs(playerVelocity.y) * (isSprinting ? sprintStaminaCost : staminaCost);
-//     // Stamina regeneration logic
-//     if (playerVelocity.length() === 0 && this.currentStamina < this.staminaMaxWidth) {
-//         this.currentStamina += staminaRegenRate;
-//         if (this.currentStamina > this.staminaMaxWidth) {
-//             this.currentStamina = this.staminaMaxWidth;
-//         }
-//         // Update the stamina bar fill width
-//         const staminaFillWidth = (this.currentStamina / this.staminaMaxWidth) * this.staminaMaxWidth;
-//         this.staminaBarFill.width = staminaFillWidth;
-//     }
-//     if (this.currentStamina >= staminaCostX && this.currentStamina >= staminaCostY) {
-//         this.currentStamina -= Math.max(staminaCostX, staminaCostY);
-//         // Update the stamina bar fill width
-//         const staminaFillWidth = (this.currentStamina / this.staminaMaxWidth) * this.staminaMaxWidth;
-//         this.staminaBarFill.width = staminaFillWidth;
-//         // Move the player
-//         const nextX = this.player.x + playerVelocity.x;
-//         const nextY = this.player.y + playerVelocity.y;
-//         const canvasWidth = this.game.config.width;
-//         const canvasHeight = this.game.config.height;
-//         if (nextX > 15 && nextX < canvasWidth - 15) {
-//             this.player.x = nextX;
-//         }
-//         if (nextY > 15 && nextY < canvasHeight - 15) {
-//             this.player.y = nextY;
-//         }
-//     }
-    
 }
 }

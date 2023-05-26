@@ -35,6 +35,14 @@ io.on('connection', function (socket) { // on connect event
         io.emit('left', socket.id);
         // remove player data and emit that they have left the game
     });
+
+    socket.on('heDothMoveth', function(movementData){
+        players[socket.id].x = movementData.x;
+        players[socket.id].y = movementData.y;
+        socket.broadcast.emit('playerMoved', players[socket.id]);
+        console.log("player moved " + players[socket.id].player);
+    });
+
 });
 
 http.listen(3000, function () {
