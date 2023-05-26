@@ -10,6 +10,7 @@ export default class MainScene extends Phaser.Scene {
     constructor() {
         super('MainScene');
         this.timer = null;
+        this.redLight = true;
     } preload() {
         console.log('preload')
         this.load.spritesheet('player', player, { frameWidth: 48, frameHeight: 48 }); 
@@ -128,7 +129,9 @@ export default class MainScene extends Phaser.Scene {
 }
     timerCallback() {
         // This function will be called when the timer duration is reached
-        console.log('Timer completed!');
+        this.redLight = ! this.redLight;
+        console.log('redlight: ', this.redLight);
+        this.timer.start()
     }
     addPlayer(playerInfo){
         this.player = new PlayerClass(this, 300, 300, playerInfo.playerId);
