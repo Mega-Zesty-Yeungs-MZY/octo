@@ -1,3 +1,5 @@
+
+
 const server = require('express')(); 
 const http = require('http').createServer(server);
 const io = require('socket.io')(http);
@@ -15,10 +17,15 @@ io.on('connection', function (socket) { // on connect event
 
 
     players[socket.id] = {
-        playerId : socket.id // create player entry in dictionary
+        playerId : socket.id,
+        x : 300,
+        y : 300
+        // create player entry in dictionary
     };
 
     //console.log(Object.keys(players).length);
+
+
 
     socket.emit('currentPlayers', players);
     // sends event to all existing players, about a new player
@@ -26,6 +33,10 @@ io.on('connection', function (socket) { // on connect event
     socket.broadcast.emit('newPlayer', players[socket.id]); 
     // sends an event to the newPlayer, loads current sprites
    
+
+    socket.on("stevensuckmedaddy", function(){
+        console.log("Hello World");
+    })
 
     socket.on('disconnect', function () {
         console.log('A user disconnected: ' + socket.id);
@@ -41,6 +52,8 @@ io.on('connection', function (socket) { // on connect event
         players[socket.id].y = movementData.y;
         socket.broadcast.emit('playerMoved', players[socket.id]);
     });
+
+
 
 });
 

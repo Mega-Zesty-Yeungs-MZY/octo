@@ -51,9 +51,9 @@ export default class MainScene extends Phaser.Scene {
         this.socket.on('newPlayer', function (playerInfo) {
             self.addOtherPlayers(playerInfo);
           });
-          this.socket.on('disconnect', function (playerId) {
-            self.otherPlayers.getChildren().forEach(function (otherPlayer) {
-              if (playerId === otherPlayer.playerId) {
+          this.socket.on('left', function (identity) {
+            self.otherPlayersGroup.getChildren().forEach(function (otherPlayer) {
+              if (identity === otherPlayer.playerId) {
                 otherPlayer.destroy();
               }
             });
