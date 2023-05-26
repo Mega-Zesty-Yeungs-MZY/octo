@@ -45,9 +45,9 @@ export default class MainScene extends Phaser.Scene {
         this.socket.on('newPlayer', function (playerInfo) {
             self.addOtherPlayers(playerInfo);
           });
-          this.socket.on('disconnect', function (playerId) {
-            self.otherPlayers.getChildren().forEach(function (otherPlayer) {
-              if (playerId === otherPlayer.playerId) {
+          this.socket.on('left', function (identity) {
+            self.otherPlayersGroup.getChildren().forEach(function (otherPlayer) {
+              if (identity === otherPlayer.playerId) {
                 otherPlayer.destroy();
               }
             });
@@ -131,10 +131,10 @@ export default class MainScene extends Phaser.Scene {
         console.log('Timer completed!');
     }
     addPlayer(playerInfo){
-        this.player = new PlayerClass(this, 300, 300, playerInfo.playerId);
+        this.player = new PlayerClass(this, playerInfo.x, playerInfo.y, playerInfo.playerId);
     }
     addOtherPlayers(playerInfo){
-        const otherplayer = new PlayerClass(this, 300, 300);
+        const otherplayer = new PlayerClass(this, playerInfo.x, playerInfo.y);
 
         otherplayer.playerId = playerInfo.playerId;
         this.otherPlayersGroup.add(otherplayer);
