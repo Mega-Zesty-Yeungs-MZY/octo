@@ -12,8 +12,12 @@ export default class MainScene extends Phaser.Scene {
         this.load.spritesheet('player', player, { frameWidth: 48, frameHeight: 48 }); 
         
     }
-    create() {
+    create() {        
         const self = this;
+        let bg = this.add.image(0,0, 'grass');
+        bg.setScale(5).setScrollFactor(1);
+        this.cameras.main.setBounds(0,0,bg.displayWidth/2, bg.displayHeight/2);
+        this.physics.world.setBounds(0, 0, bg.displayWidth/2, bg.displayHeight/2, true, true, true , true)
         this.socket = io('http://localhost:3000', { transports: ['websocket'] });
 
         this.socket.on('connect', function () {
@@ -55,6 +59,23 @@ export default class MainScene extends Phaser.Scene {
 
         //! background        
         
+        this.player = new PlayerClass(this, 300, 300);
+        this.cameras.main.startFollow(this.player)
+        //! background
+        // this.background = this.add.tileSprite(0, 0, 800, 600, 'grass').setOrigin(0, 0);  
+             
+        // const grass = this.add.sprite(0, 0, 'grass', '10')
+        // const map = this.make.tilemap({ key: 'map' });
+        // const tileset = map.addTilesetImage('jungle', 'grass', 32, 32);
+        // const tileWidth = map.tileWidth;
+        // const tileHeight = map.tileHeight;
+        // const mapWidth = map.width;
+        // const mapHeight = map.height;
+        // const mapPx = mapWidth * tileWidth;
+        // const mapPy = mapHeight * tileHeight;
+
+        // const layer1 = this.add.tileSprite(0, 0, 800, 600, 'grass').setOrigin(0, 0);
+
         //! Obstacle
         this.obstacle = this.physics.add.sprite(400, 300, "obstacle");        
 
