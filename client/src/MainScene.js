@@ -1,4 +1,5 @@
 import io from 'socket.io-client';
+import background from './assets/jungle tileset.png';
 import player from './assets/player.png';
 import PlayerClass from './classes/PlayerClass.js';
 import Timer from './classes/Timer.js';
@@ -10,7 +11,7 @@ export default class MainScene extends Phaser.Scene {
     } preload() {
         console.log('preload')
         this.load.spritesheet('player', player, { frameWidth: 48, frameHeight: 48 }); 
-        
+        this.load.image('grass', background);
     }
     create() {        
         const self = this;
