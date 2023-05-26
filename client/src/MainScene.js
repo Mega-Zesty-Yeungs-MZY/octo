@@ -18,8 +18,12 @@ export default class MainScene extends Phaser.Scene {
         this.load.image('grass', background);
         // this.load.tilemapTiledJSON('map', map);
     }
-    create() {
+    create() {        
         const self = this;
+        let bg = this.add.image(0,0, 'grass');
+        bg.setScale(5).setScrollFactor(1);
+        this.cameras.main.setBounds(0,0,bg.displayWidth/2, bg.displayHeight/2);
+        this.physics.world.setBounds(0, 0, bg.displayWidth/2, bg.displayHeight/2, true, true, true , true)
         this.socket = io('http://localhost:3000', { transports: ['websocket'] });
 
         this.socket.on('connect', function () {
@@ -39,7 +43,7 @@ export default class MainScene extends Phaser.Scene {
         })
 
         this.player = new PlayerClass(this, 300, 300);
-
+        this.cameras.main.startFollow(this.player)
         //! background
         // this.background = this.add.tileSprite(0, 0, 800, 600, 'grass').setOrigin(0, 0);  
              
