@@ -94,6 +94,7 @@ export default class MainScene extends Phaser.Scene {
 
         // Start the timer
         this.timer.start();
+        
     }
     update() {
         if (this.player) { // Check if player object is defined before updating
@@ -114,7 +115,17 @@ export default class MainScene extends Phaser.Scene {
         }  
  
         this.timer.updateTimerText(); 
+
+
+
+    if (this.player && this.obstacle) {
+        if (this.physics.overlap(this.player, this.obstacle)) {
+            console.log("Collision detected!");
+        }
     }
+
+    // ...
+}
     timerCallback() {
         // This function will be called when the timer duration is reached
         console.log('Timer completed!');
