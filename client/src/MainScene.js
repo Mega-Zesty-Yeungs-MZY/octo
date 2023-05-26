@@ -75,15 +75,17 @@ export default class MainScene extends Phaser.Scene {
         
         
         
-        const staminaBarWidth = 200;
-        const staminaBarHeight = 20;
-        const staminaBarX = 400;
-        const staminaBarY = 550;
-        const staminaBarBackground = this.add.rectangle(staminaBarX, staminaBarY, staminaBarWidth, staminaBarHeight, 0x808080);
-        const staminaBarFill = this.add.rectangle(staminaBarX - staminaBarWidth / 2, staminaBarY, 0, staminaBarHeight, 0x00ff00);
+        const staminaBarWidth = 400;
+        const staminaBarHeight = 40;
+        const staminaBarX = this.cameras.main.centerX;
+        const staminaBarY = this.cameras.main.centerY + 300;
+        this.staminaBarBackground = this.add.rectangle(staminaBarX, staminaBarY, staminaBarWidth, staminaBarHeight, 0x808080);
+        this.staminaBarBackground.setScrollFactor(0);
+        this.staminaBarFill = this.add.rectangle(staminaBarX - staminaBarWidth / 2, staminaBarY, 0, staminaBarHeight, 0x00ff00);
+        this.staminaBarFill.setScrollFactor(0);
         this.staminaMaxWidth = staminaBarWidth;
         this.currentStamina = staminaBarWidth;
-        this.staminaBarFill = staminaBarFill;
+        // this.staminaBarFill = staminaBarFill;
 
         //! timer
         // Create the Timer instance
@@ -99,11 +101,17 @@ export default class MainScene extends Phaser.Scene {
     }
     update() {
         if (this.player) { // Check if player object is defined before updating
+            console.log(this.staminaBarFill.width);
             this.player.update();
-            
+            this.staminaBarFill.width = this.player.getstamina()/100 * this.staminaBarBackground.width;
+            if (this.player.getstaminaspent()) {
+                this.staminaBarFill.fillColor = 0xFF8000;
+            } else {
+                this.staminaBarFill.fillColor = 0x00FF00;
+            }
             var x = this.player.x;
             var y = this.player.y;
-
+            
             if (this.player.oldPosition && (x !== this.player.oldPosition.x || y !== this.player.oldPosition.y)){
                 console.log("emitted!");
                 this.socket.emit('heDothMoveth', {x : this.player.x, y : this.player.y});
