@@ -59,25 +59,9 @@ export default class MainScene extends Phaser.Scene {
         })
 
         //! background        
-        
-        this.player = new PlayerClass(this, 300, 300);
-        this.cameras.main.startFollow(this.player)
-        //! background
-        // this.background = this.add.tileSprite(0, 0, 800, 600, 'grass').setOrigin(0, 0);  
-             
-        // const grass = this.add.sprite(0, 0, 'grass', '10')
-        // const map = this.make.tilemap({ key: 'map' });
-        // const tileset = map.addTilesetImage('jungle', 'grass', 32, 32);
-        // const tileWidth = map.tileWidth;
-        // const tileHeight = map.tileHeight;
-        // const mapWidth = map.width;
-        // const mapHeight = map.height;
-        // const mapPx = mapWidth * tileWidth;
-        // const mapPy = mapHeight * tileHeight;
 
-        // const layer1 = this.add.tileSprite(0, 0, 800, 600, 'grass').setOrigin(0, 0);
+       //this.cameras.main.startFollow(this.player)
 
-        //! Obstacle
         this.obstacle = this.physics.add.sprite(400, 300, "obstacle");        
 
         const staminaBarWidth = 200;

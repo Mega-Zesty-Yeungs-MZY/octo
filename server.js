@@ -40,7 +40,6 @@ io.on('connection', function (socket) { // on connect event
         players[socket.id].x = movementData.x;
         players[socket.id].y = movementData.y;
         socket.broadcast.emit('playerMoved', players[socket.id]);
-        console.log("player moved " + players[socket.id].player);
     });
 
 });
