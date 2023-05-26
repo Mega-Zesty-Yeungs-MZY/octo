@@ -14,7 +14,10 @@ export default class MainScene extends Phaser.Scene {
         console.log('preload')
         this.load.spritesheet('player', player, { frameWidth: 48, frameHeight: 48 }); 
         this.load.image('grass', background);
+        this.load.image('obstacle', obstacle)
     }
+
+    
     create() {        
         const self = this;
         let bg = this.add.image(0,0, 'grass');
@@ -62,9 +65,14 @@ export default class MainScene extends Phaser.Scene {
 
         //! background        
 
-       //this.cameras.main.startFollow(this.player)
+       
+       // this.cameras.main.startFollow(this.player)
 
-        this.obstacle = this.physics.add.sprite(400, 300, 'obstacle');        
+
+        this.obstacle = this.physics.add.sprite(400, 300, 'obstacle');    
+        this.obstacle.setScale(0.1, 0.1);
+
+        
 
         const staminaBarWidth = 200;
         const staminaBarHeight = 20;
