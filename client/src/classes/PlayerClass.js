@@ -35,7 +35,28 @@ let staminaspent = false;
         frames: this.anims.generateFrameNumbers('player', { start: 0, end: 5 }),
         frameRate: 7,
         repeat: -1
-    });        
+    });
+    
+    //! run
+    this.anims.create({
+        key: 'runLR',
+        frames: this.anims.generateFrameNumbers('player', { start: 25, end: 29 }),
+        frameRate: 12,
+        repeat: -1
+    }); 
+    this.anims.create({
+        key: 'runDOWN',
+        frames: this.anims.generateFrameNumbers('player', { start: 19, end: 23 }),
+        frameRate: 12,
+        repeat: -1
+    }); 
+    this.anims.create({
+        key: 'runUP',
+        frames: this.anims.generateFrameNumbers('player', { start: 31, end: 35 }),
+        frameRate: 12,
+        repeat: -1
+    }); 
+    
     
     //! input keys
 
@@ -92,10 +113,25 @@ let staminaspent = false;
         this.anims.play('idle', true);
     }
 
+    //! sprinting
     if (this.keySHIFT.isDown && (playerVelocity.x != 0 || playerVelocity.y != 0) && !staminaspent) {
+        
         isSprinting = true;
-        sprintaccel = sprintaccel >= sprintMultiplier? sprintMultiplier : sprintaccel + 0.1;
+        sprintaccel = sprintaccel >= sprintMultiplier? sprintMultiplier : sprintaccel + 0.05;
         staminapts = staminapts <= 0? 0 : staminapts - 1
+        // if (this.keySHIFT.isDown && this.keyA.isDown ) {
+        //     this.anims.stop('walkLR', true);
+        //     this.anims.play('runLR', true).setFlipX(true);
+        // }
+        // if (this.keySHIFT.isDown && this.keyD.isDown && !this.keyA.isDown) {
+        //     this.anims.play('runLR', true).setFlipX(false);
+        // }
+        // if (this.keySHIFT.isDown && this.keyW.isDown && !this.keyS.isDown) {
+        //     this.anims.play('runUP', true);
+        // }
+        // if (this.keySHIFT.isDown && this.keyS.isDown && !this.keyW.isDown) {
+        //     this.anims.play('runDOWN', true);
+        // }
     } else {
         isSprinting = false;
         sprintaccel = sprintaccel <= 1? 1 : sprintaccel - 0.1;
