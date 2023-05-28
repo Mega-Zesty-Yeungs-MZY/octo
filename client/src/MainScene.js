@@ -2,9 +2,11 @@ import io from 'socket.io-client';
 import background from './assets/background.png';
 import player from './assets/player.png';
 import obstacle from './assets/obstacle.png'
-import ObstacleClass from './classes/ObstaclesClass.js'
+import { ObstaclesClass } from './classes/ObstaclesClass.js';
 import PlayerClass from './classes/PlayerClass.js';
 import Timer from './classes/Timer.js';
+import redLight from './assets/red-light.png';
+import greenLight from './assets/Green-light.png';
 
 export default class MainScene extends Phaser.Scene {
     constructor() {
@@ -16,6 +18,8 @@ export default class MainScene extends Phaser.Scene {
         this.load.spritesheet('player', player, { frameWidth: 48, frameHeight: 48 }); 
         this.load.image('grass', background);
         this.load.image('obstacle', obstacle)
+        this.load.image('red', redLight)
+        this.load.image('green', greenLight)
     }
 
     
@@ -47,9 +51,9 @@ export default class MainScene extends Phaser.Scene {
         this.socket.on('newPlayer', function (playerInfo) {
             self.addOtherPlayers(playerInfo);
           });
-          this.socket.on('disconnect', function (playerId) {
-            self.otherPlayers.getChildren().forEach(function (otherPlayer) {
-              if (playerId === otherPlayer.playerId) {
+          this.socket.on('left', function (identity) {
+            self.otherPlayersGroup.getChildren().forEach(function (otherPlayer) {
+              if (identity === otherPlayer.playerId) {
                 otherPlayer.destroy();
               }
             });
@@ -75,15 +79,17 @@ export default class MainScene extends Phaser.Scene {
         
         
         
-        const staminaBarWidth = 200;
-        const staminaBarHeight = 20;
-        const staminaBarX = 400;
-        const staminaBarY = 550;
-        const staminaBarBackground = this.add.rectangle(staminaBarX, staminaBarY, staminaBarWidth, staminaBarHeight, 0x808080);
-        const staminaBarFill = this.add.rectangle(staminaBarX - staminaBarWidth / 2, staminaBarY, 0, staminaBarHeight, 0x00ff00);
+        const staminaBarWidth = 400;
+        const staminaBarHeight = 40;
+        const staminaBarX = this.cameras.main.centerX;
+        const staminaBarY = this.cameras.main.centerY + 300;
+        this.staminaBarBackground = this.add.rectangle(staminaBarX, staminaBarY, staminaBarWidth, staminaBarHeight, 0x808080);
+        this.staminaBarBackground.setScrollFactor(0);
+        this.staminaBarFill = this.add.rectangle(staminaBarX - staminaBarWidth / 2, staminaBarY, 0, staminaBarHeight, 0x00ff00);
+        this.staminaBarFill.setScrollFactor(0);
         this.staminaMaxWidth = staminaBarWidth;
         this.currentStamina = staminaBarWidth;
-        this.staminaBarFill = staminaBarFill;
+        // this.staminaBarFill = staminaBarFill;
 
         //! timer
         // Create the Timer instance
@@ -92,18 +98,32 @@ export default class MainScene extends Phaser.Scene {
         // Create and position the timer text
         const timerTextStyle = { font: '24px Arial', fill: '#ffffff' };
         this.timer.createTimerText(10, 10, timerTextStyle);
+        this.light = this.add.image(20, 60, 'red')
+        this.light.setScale(0.2, 0.2)
         
         // Start the timer
         this.timer.start();
+
+        this.obstaclesGroup = new ObstaclesClass(this, this.otherPlayersGroup);
+
+        this.obstaclesGroup.collisionHandler = this.collisionHandler.bind(this);
+
+
         
     }
     update() {
         if (this.player) { // Check if player object is defined before updating
+            console.log(this.staminaBarFill.width);
             this.player.update();
-            
+            this.staminaBarFill.width = this.player.getstamina()/100 * this.staminaBarBackground.width;
+            if (this.player.getstaminaspent()) {
+                this.staminaBarFill.fillColor = 0xFF8000;
+            } else {
+                this.staminaBarFill.fillColor = 0x00FF00;
+            }
             var x = this.player.x;
             var y = this.player.y;
-
+            
             if (this.player.oldPosition && (x !== this.player.oldPosition.x || y !== this.player.oldPosition.y)){
                 console.log("emitted!");
                 this.socket.emit('heDothMoveth', {x : this.player.x, y : this.player.y});
@@ -119,17 +139,23 @@ export default class MainScene extends Phaser.Scene {
         
         
         
-        if (this.player && this.obstacle) {
-            if (this.physics.overlap(this.player, this.obstacle)) {
-                console.log("Collision detected!");
-            }
-        }
-        
+        if (this.player && this.obstaclesGroup) {
+            this.physics.add.collider(this.player, this.obstaclesGroup.obstaclesGroup, this.collisionHandler, null, this);
+  
         // ...
     }
+
+}
     timerCallback() {
         // This function will be called when the timer duration is reached
         this.redLight = ! this.redLight;
+        if (this.redLight == false){
+            this.light = this.add.image(20, 60, 'green')
+            this.light.setScale(0.2, 0.2)
+        } else{
+            this.light = this.add.image(20, 60, 'red')
+            this.light.setScale(0.2, 0.2)
+        }
         console.log('redlight: ', this.redLight);
         this.timer.start()
     }
@@ -145,4 +171,43 @@ export default class MainScene extends Phaser.Scene {
         this.otherPlayersGroup.add(otherplayer);
         
     }
+
+    collisionHandler(player, obstacle) {
+        if (player && obstacle) {
+          console.log('Collision detected!');
+          player.setVelocity(0, 0);
+
+             
+          const collisionDistance = 300; 
+        
+        //  distance between the player and the obstacle
+          const distance = Phaser.Math.Distance.Between(player.x, player.y, obstacle.x, obstacle.y);
+        
+        // checks if the player is within the collision distance
+        if (distance <= collisionDistance) {
+        
+            const angle = Phaser.Math.Angle.Between(player.x, player.y, obstacle.x, obstacle.y);
+            
+            // Calculates the block position based on the obstacle's size
+            const blockX = obstacle.x + Math.cos(angle) * (obstacle.displayWidth / 2 + player.displayWidth / 2);
+            const blockY = obstacle.y + Math.sin(angle) * (obstacle.displayHeight / 2 + player.displayHeight / 2);
+        
+        // repositions the player outside the collision zone
+            player.setPosition(blockX, blockY);
+    }
+          if (player.staminapts) {
+            player.staminapts -= 10;
+          }
+      
+          // reduces the player's velocity temporarily 
+          player.setVelocityX(player.body.velocity.x * 0.8);
+          player.setVelocityY(player.body.velocity.y * 0.8);
+      
+          // restores player's original velocity
+          this.time.delayedCall(2000, () => {
+            player.setVelocityX(player.body.velocity.x * 1.25);
+            player.setVelocityY(player.body.velocity.y * 1.25);
+          });
+        }
+      }
 }

@@ -144,7 +144,7 @@ let staminaspent = false;
         staminaspent = false;
     }
 
-
+    
 
 
     //! normalize and scale the velocity so that player can't move faster along a diagonal
@@ -154,4 +154,11 @@ let staminaspent = false;
 
 
 }
+    getstamina() {
+        return staminapts;
+    }
+
+    getstaminaspent() {
+        return staminaspent;
+    }
 }

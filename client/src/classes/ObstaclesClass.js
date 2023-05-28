@@ -1,56 +1,72 @@
-/*
+export class ObstaclesClass  {
+  constructor(scene, playerGroup) {
+    this.scene = scene;
+    this.obstaclesGroup = this.scene.physics.add.group();
+    this.playerGroup = playerGroup;
 
-export default class ObstaclesClass extends Phaser.Physics.Arcade.Sprite {
-    constructor(scene, x, y, textureKey, player) {
-        super(scene, x, y, textureKey);
-        scene.add.existing(this);
-        scene.physics.add.existing(this);
-
-
-        this.setBodySize(this.width, this.height); 
-        this.setRandomPosition(); // Set a random position for the obstacle
-        this.body.setCollideWorldBounds(true); // Update this line
-        this.setImmovable(true);
-        this.setOrigin(0.5);
-
-        this.scene = scene;
-        this.player = player;
-        this.scene.physics.add.collider(this.player, this, this.collisionHandler, null, this);
+    // creates + adds obstacles to the group
+    for (let i = 0; i < 25; i++) {
+      const obstacle = this.createObstacle();
+      this.obstaclesGroup.add(obstacle);
     }
 
+    // obstacle collisions with player group
+    this.scene.physics.add.collider(
+      this.playerGroup,
+      this.obstaclesGroup,
+      (player, obstacle) => this.collisionHandler(player, obstacle),
+      null,
+      this
+    );
+  }
 
+  createObstacle() {
+    const obstacle = this.scene.physics.add.sprite(0, 0, 'obstacle');
+  
+    // some obstacle properties like size, position, scale, etc.
+    obstacle.setScale(0.1);
+    this.setRandomPosition(obstacle);
+    obstacle.setImmovable(true);
+    obstacle.setOrigin(0.5);
+    obstacle.setSize(100, 100);
+    obstacle.setOffset(70, 70);
+    
+  
+    return obstacle;
+  }
 
-    collisionHandler(player, obstacle) {
-        if (player && obstacle) {
-          console.log('Collision detected!');
-          player.setVelocity(0, 0);
-          player.setPosition(300, 300);
-          if (player.staminapts) {
-            player.staminapts -= 10;
-          }
-        }
+  collisionHandler(player, obstacle) {
+    if (player && obstacle) {
+      console.log('Collision detected!');
+      player.setVelocity(0, 0);
+      if (player.staminapts) {
+        player.staminapts -= 10;
       }
-      
-    
-
-      setRandomPosition() {
-        const { width, height } = this.scene.sys.game.config;
-        const minX = this.displayWidth / 2;
-        const maxX = width - this.displayWidth / 2;
-        const minY = this.displayHeight / 2;
-        const maxY = height - this.displayHeight / 2;
-    
-        let randomX = Phaser.Math.Between(minX, maxX);
-        let randomY = Phaser.Math.Between(minY, maxY);
-    
-        // Adjust the position if it's outside the world bounds
-        randomX = Phaser.Math.Clamp(randomX, minX, maxX);
-        randomY = Phaser.Math.Clamp(randomY, minY, maxY);
-    
-        this.setPosition(randomX, randomY);
+  
+      // when the player hits the obstacle, their velocity will be reduced (but only temporarily)
+      player.setVelocityX(player.body.velocity.x * 0.8);
+      player.setVelocityY(player.body.velocity.y * 0.8);
+  
+      // restores the player's velocity back to the original
+      this.scene.time.delayedCall(2000, () => {
+        player.setVelocityX(player.body.velocity.x * 1.25);
+        player.setVelocityY(player.body.velocity.y * 1.25);
+      });
     }
+  }
+
+  // each time the page is refreshed, obstacles will be placed in random positions throughout the scene (issue is getting the multiplayer in sync)
+
+  setRandomPosition(obstacle) {
+    const { width, height } = this.scene.sys.game.config;
+    const minX = obstacle.displayWidth / 2;
+    const maxX = width - obstacle.displayWidth / 2;
+    const minY = obstacle.displayHeight / 2;
+    const maxY = height - obstacle.displayHeight / 2;
+
+    const randomX = Phaser.Math.Between(minX, maxX);
+    const randomY = Phaser.Math.Between(minY, maxY);
+
+    obstacle.setPosition(randomX, randomY);
+  }
 }
-
-*/
-
-// don't uncomment this as it will basically break the server
