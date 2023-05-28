@@ -4,13 +4,13 @@ export class ObstaclesClass  {
     this.obstaclesGroup = this.scene.physics.add.group();
     this.playerGroup = playerGroup;
 
-    // Create and add obstacles to the group
-    for (let i = 0; i < 5; i++) {
+    // creates + adds obstacles to the group
+    for (let i = 0; i < 25; i++) {
       const obstacle = this.createObstacle();
       this.obstaclesGroup.add(obstacle);
     }
 
-    // Set obstacle collisions with player group
+    // obstacle collisions with player group
     this.scene.physics.add.collider(
       this.playerGroup,
       this.obstaclesGroup,
@@ -23,7 +23,7 @@ export class ObstaclesClass  {
   createObstacle() {
     const obstacle = this.scene.physics.add.sprite(0, 0, 'obstacle');
   
-    // Set obstacle properties
+    // some obstacle properties like size, position, scale, etc.
     obstacle.setScale(0.1);
     this.setRandomPosition(obstacle);
     obstacle.setImmovable(true);
@@ -39,24 +39,23 @@ export class ObstaclesClass  {
     if (player && obstacle) {
       console.log('Collision detected!');
       player.setVelocity(0, 0);
-      player.setPosition(300, 300);
       if (player.staminapts) {
         player.staminapts -= 10;
       }
   
-      // when the player hits the obstacle, their velocity will be reduced by half (but only temporarily)
-      player.setVelocityX(player.body.velocity.x * 0.5);
-      player.setVelocityY(player.body.velocity.y * 0.5);
+      // when the player hits the obstacle, their velocity will be reduced (but only temporarily)
+      player.setVelocityX(player.body.velocity.x * 0.8);
+      player.setVelocityY(player.body.velocity.y * 0.8);
   
-      // restores the player's velocity back to the origianl
+      // restores the player's velocity back to the original
       this.scene.time.delayedCall(2000, () => {
-        player.setVelocityX(player.body.velocity.x * 2);
-        player.setVelocityY(player.body.velocity.y * 2);
+        player.setVelocityX(player.body.velocity.x * 1.25);
+        player.setVelocityY(player.body.velocity.y * 1.25);
       });
     }
   }
 
-  // each time the page is refreshed, obstacles will be placed in random positions throughout the scene
+  // each time the page is refreshed, obstacles will be placed in random positions throughout the scene (issue is getting the multiplayer in sync)
 
   setRandomPosition(obstacle) {
     const { width, height } = this.scene.sys.game.config;

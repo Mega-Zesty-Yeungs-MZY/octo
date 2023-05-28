@@ -176,19 +176,37 @@ export default class MainScene extends Phaser.Scene {
         if (player && obstacle) {
           console.log('Collision detected!');
           player.setVelocity(0, 0);
-          player.setPosition(300, 300);
+
+             
+          const collisionDistance = 300; 
+        
+        //  distance between the player and the obstacle
+          const distance = Phaser.Math.Distance.Between(player.x, player.y, obstacle.x, obstacle.y);
+        
+        // checks if the player is within the collision distance
+        if (distance <= collisionDistance) {
+        
+            const angle = Phaser.Math.Angle.Between(player.x, player.y, obstacle.x, obstacle.y);
+            
+            // Calculates the block position based on the obstacle's size
+            const blockX = obstacle.x + Math.cos(angle) * (obstacle.displayWidth / 2 + player.displayWidth / 2);
+            const blockY = obstacle.y + Math.sin(angle) * (obstacle.displayHeight / 2 + player.displayHeight / 2);
+        
+        // repositions the player outside the collision zone
+            player.setPosition(blockX, blockY);
+    }
           if (player.staminapts) {
             player.staminapts -= 10;
           }
       
-          // reduces the player's velocity temporarily by half
-          player.setVelocityX(player.body.velocity.x * 0.5);
-          player.setVelocityY(player.body.velocity.y * 0.5);
+          // reduces the player's velocity temporarily 
+          player.setVelocityX(player.body.velocity.x * 0.8);
+          player.setVelocityY(player.body.velocity.y * 0.8);
       
           // restores player's original velocity
           this.time.delayedCall(2000, () => {
-            player.setVelocityX(player.body.velocity.x * 2);
-            player.setVelocityY(player.body.velocity.y * 2);
+            player.setVelocityX(player.body.velocity.x * 1.25);
+            player.setVelocityY(player.body.velocity.y * 1.25);
           });
         }
       }
