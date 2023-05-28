@@ -2,7 +2,7 @@ import io from 'socket.io-client';
 import background from './assets/background.png';
 import player from './assets/player.png';
 import obstacle from './assets/obstacle.png'
-import ObstacleClass from './classes/ObstaclesClass.js'
+import { ObstaclesClass } from './classes/ObstaclesClass.js';
 import PlayerClass from './classes/PlayerClass.js';
 import Timer from './classes/Timer.js';
 import redLight from './assets/red-light.png';
@@ -103,6 +103,12 @@ export default class MainScene extends Phaser.Scene {
         
         // Start the timer
         this.timer.start();
+
+        this.obstaclesGroup = new ObstaclesClass(this, this.otherPlayersGroup);
+
+        this.obstaclesGroup.collisionHandler = this.collisionHandler.bind(this);
+
+
         
     }
     update() {
@@ -133,14 +139,13 @@ export default class MainScene extends Phaser.Scene {
         
         
         
-        if (this.player && this.obstacle) {
-            if (this.physics.overlap(this.player, this.obstacle)) {
-                console.log("Collision detected!");
-            }
-        }
-        
+        if (this.player && this.obstaclesGroup) {
+            this.physics.add.collider(this.player, this.obstaclesGroup.obstaclesGroup, this.collisionHandler, null, this);
+  
         // ...
     }
+
+}
     timerCallback() {
         // This function will be called when the timer duration is reached
         this.redLight = ! this.redLight;
@@ -166,4 +171,25 @@ export default class MainScene extends Phaser.Scene {
         this.otherPlayersGroup.add(otherplayer);
         
     }
+
+    collisionHandler(player, obstacle) {
+        if (player && obstacle) {
+          console.log('Collision detected!');
+          player.setVelocity(0, 0);
+          player.setPosition(300, 300);
+          if (player.staminapts) {
+            player.staminapts -= 10;
+          }
+      
+          // reduces the player's velocity temporarily by half
+          player.setVelocityX(player.body.velocity.x * 0.5);
+          player.setVelocityY(player.body.velocity.y * 0.5);
+      
+          // restores player's original velocity
+          this.time.delayedCall(2000, () => {
+            player.setVelocityX(player.body.velocity.x * 2);
+            player.setVelocityY(player.body.velocity.y * 2);
+          });
+        }
+      }
 }
