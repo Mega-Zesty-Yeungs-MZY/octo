@@ -1,5 +1,5 @@
 import io from 'socket.io-client';
-import background from './assets/background.png';
+// import background from './assets/background.png';
 import player from './assets/player.png';
 import obstacle from './assets/obstacle.png'
 import { ObstaclesClass } from './classes/ObstaclesClass.js';
@@ -7,6 +7,14 @@ import PlayerClass from './classes/PlayerClass.js';
 import Timer from './classes/Timer.js';
 import redLight from './assets/red-light.png';
 import greenLight from './assets/Green-light.png';
+import grassTileset from './assets/texture/grassTileset.png';
+import stoneTileset from './assets/texture/stoneGroundTileset.png';
+import wallTileset from './assets/texture/wallTileset.png';
+import plantTileset from './assets/texture/plantTileset.png';
+import propsTileset from './assets/texture/propsTileset.png';
+import plantShadowTileset from './assets/texture/plantShadowTileset.png';
+import structTileset from './assets/texture/structTileset.png';
+import map from './assets/texture/map.json';
 
 export default class MainScene extends Phaser.Scene {
     constructor() {
@@ -16,10 +24,18 @@ export default class MainScene extends Phaser.Scene {
     } preload() {
         console.log('preload')
         this.load.spritesheet('player', player, { frameWidth: 48, frameHeight: 48 }); 
-        this.load.image('grass', background);
+        // this.load.image('grass', background);
         this.load.image('obstacle', obstacle)
         this.load.image('red', redLight)
         this.load.image('green', greenLight)
+        this.load.image('grassTileset', grassTileset);
+        this.load.image('stoneTileset', stoneTileset);
+        this.load.image('wallTileset', wallTileset);
+        this.load.image('plantTileset', plantTileset);
+        this.load.image('propsTileset', propsTileset);
+        this.load.image('plantShadowTileset', plantShadowTileset);
+        this.load.image('structTileset', structTileset);
+        this.load.tilemapTiledJSON('map', map);
     }
 
     
@@ -70,9 +86,22 @@ export default class MainScene extends Phaser.Scene {
         })
 
         //! background        
+        var map = this.make.tilemap({key: 'map'});
+        var grassTiles = map.addTilesetImage('grassTileset');
+        var stoneTiles = map.addTilesetImage('stoneTileset');
+        var wallTiles = map.addTilesetImage('wallTileset');
+        var plantTiles = map.addTilesetImage('plantTileset');
+        var propsTiles = map.addTilesetImage('propsTileset');
+        var plantShadowTiles = map.addTilesetImage('plantShadowTileset');
+        var structTiles = map.addTilesetImage('structTileset');
 
+        var baseLayer = map.createLayer('baseLayer', [grassTiles, stoneTiles, wallTiles, plantTiles, propsTiles, plantShadowTiles, structTiles], 0, 0);
+        var shadow = map.createLayer('shadow', [grassTiles, stoneTiles, wallTiles, plantTiles, propsTiles, plantShadowTiles, structTiles], 0, 0);
+        var level2 = map.createLayer('level2', [grassTiles, stoneTiles, wallTiles, plantTiles, propsTiles, plantShadowTiles, structTiles], 0, 0);
+        var walls = map.createLayer('walls', [grassTiles, stoneTiles, wallTiles, plantTiles, propsTiles, plantShadowTiles, structTiles], 0, 0);
+        var props = map.createLayer('props', [grassTiles, stoneTiles, wallTiles, plantTiles, propsTiles, plantShadowTiles, structTiles], 0, 0);
        
-        
+        //!
         
         this.obstacle = this.physics.add.sprite(400, 300, 'obstacle');    
         this.obstacle.setScale(0.1, 0.1);

@@ -5,7 +5,7 @@ export class ObstaclesClass  {
     this.playerGroup = playerGroup;
 
     // creates + adds obstacles to the group
-    for (let i = 0; i < 25; i++) {
+    for (let i = 0; i < 5; i++) {
       const obstacle = this.createObstacle();
       this.obstaclesGroup.add(obstacle);
     }
