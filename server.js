@@ -10,7 +10,11 @@ var players = {};
 Object that will store all connections to the server (players)
 Whether it needs to be replaced with Firebase may be a different story
 */
-timer.start()
+function timerCallback(){
+    // insert code for when timer is up
+}
+
+timer.start(timerCallback())
 
 io.on('connection', function (socket) { // on connect event
     console.log('A user connected: ' + socket.id);
