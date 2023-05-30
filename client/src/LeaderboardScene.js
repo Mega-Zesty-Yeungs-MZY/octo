@@ -5,15 +5,7 @@ export default class LeaderboardScene extends Phaser.Scene {
     }
 
     preload() {
-        function loadFont(name, url) {
-            var newFont = new FontFace(name, `url(${url})`);
-            newFont.load().then(function (loaded) {
-                document.fonts.add(loaded);
-            }).catch(function (error) {
-                return error;
-            });
-        }
-        loadFont('PressStart', "client/src/Fonts/PressStart2P.ttf")
+        this.load.bitmapFont('pressStart', './fonts/PressStart2P.bmp');
     }
 
     create() {
@@ -54,13 +46,16 @@ export default class LeaderboardScene extends Phaser.Scene {
                 this.add.text(300, 125, "Place \n" + placeStr, {fontSize: '30px'});
                 this.add.text(450, 125, "Name \n" + nameStr, {fontSize: '30px'});
                 this.add.text(600, 125, "Time \n" + timeStr, {fontSize: '30px'})
+
+               
             })
             .catch(error => {
                 // Handle any errors
                 console.error('Error:', error);
             });
 
-        this.add.text(300, 10, 'Leaderboard', { fontSize: '69px', align:'center', fontFamily:"" });
+        this.add.text(300, 10, 'Leaderboard', { fontSize: '69px', align:'center', fontFamily:"pressStart" });
+        this.add.bitmapText(300, 300, 'pressStart', 'Hello World');
     }
 
     update() {
