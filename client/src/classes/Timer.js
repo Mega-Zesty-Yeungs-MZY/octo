@@ -5,14 +5,18 @@ class Timer {
     this.timerId = null;
   }
 
-  start() {
+  start(callback) {
     this.startTime = new Date().getTime();
     this.endTime = this.startTime + 5000; // 5 seconds
+    this.callback = callback;
     this.timerId = setInterval(() => {
       const currentTime = new Date().getTime();
       const remainingTime = this.endTime - currentTime;
       if (remainingTime <= 0) {
         this.stop();
+        if (typeof this.callback === 'function') {
+          this.callback();
+        }
       }
     }, 1000);
   }
