@@ -120,19 +120,10 @@ export default class MainScene extends Phaser.Scene {
         this.currentStamina = staminaBarWidth;
         // this.staminaBarFill = staminaBarFill;
 
-        //! timer
-        // Create the Timer instance
-        this.timer = new Timer(this, 5000, this.timerCallback);
-        
-        // Create and position the timer text
-        const timerTextStyle = { font: '24px Arial', fill: '#ffffff' };
-        this.timer.createTimerText(10, 10, timerTextStyle);
+        // light
         this.light = this.add.image(20, 60, 'red')
         this.light.setScrollFactor(0);
         this.light.setScale(0.2, 0.2)
-        
-        // Start the timer
-        this.timer.start();
 
         this.obstaclesGroup = new ObstaclesClass(this, this.otherPlayersGroup);
 
@@ -164,10 +155,7 @@ export default class MainScene extends Phaser.Scene {
                 y: this.player.y
             };
         }  
-        
-        this.timer.updateTimerText(); 
-        
-        
+                
         
         if (this.player && this.obstaclesGroup) {
             this.physics.add.collider(this.player, this.obstaclesGroup.obstaclesGroup, this.collisionHandler, null, this);
@@ -176,23 +164,24 @@ export default class MainScene extends Phaser.Scene {
     }
 
 }
-    timerCallback() {
-        // This function will be called when the timer duration is reached
-        this.redLight = ! this.redLight;
-        if (this.redLight == false){
-            this.light.destroy();
-            this.light = this.add.image(20, 60, 'green')
-            this.light.setScale(0.2, 0.2)
-            this.light.setScrollFactor(0);
-        } else{
-            this.light.destroy();
-            this.light = this.add.image(20, 60, 'red')
-            this.light.setScale(0.2, 0.2)
-            this.light.setScrollFactor(0);
-        }
-        console.log('redlight: ', this.redLight);
-        this.timer.start()
-    }
+// depricated code to change light color, use timer from server.js
+    // timerCallback() {
+    //     // This function will be called when the timer duration is reached
+    //     this.redLight = ! this.redLight;
+    //     if (this.redLight == false){
+    //         this.light.destroy();
+    //         this.light = this.add.image(20, 60, 'green')
+    //         this.light.setScale(0.2, 0.2)
+    //         this.light.setScrollFactor(0);
+    //     } else{
+    //         this.light.destroy();
+    //         this.light = this.add.image(20, 60, 'red')
+    //         this.light.setScale(0.2, 0.2)
+    //         this.light.setScrollFactor(0);
+    //     }
+    //     console.log('redlight: ', this.redLight);
+    //     this.timer.start()
+    // }
     addPlayer(playerInfo){
         this.player = new PlayerClass(this, 300, 300, playerInfo.playerId);
         this.cameras.main.startFollow(this.player)
