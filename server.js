@@ -1,8 +1,8 @@
-
-
+const Timer = require('./client/src/classes/Timer.js');
 const server = require('express')(); 
 const http = require('http').createServer(server);
 const io = require('socket.io')(http);
+const timer = new Timer();
 // Requirements
 
 var players = {};
@@ -10,7 +10,7 @@ var players = {};
 Object that will store all connections to the server (players)
 Whether it needs to be replaced with Firebase may be a different story
 */
-
+timer.start()
 
 io.on('connection', function (socket) { // on connect event
     console.log('A user connected: ' + socket.id);

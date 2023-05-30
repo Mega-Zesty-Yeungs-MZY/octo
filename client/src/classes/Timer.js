@@ -1,42 +1,30 @@
-export default class Timer {
-    constructor(scene, duration, callback) { //location should be an array defined as [x,y]
-      this.scene = scene;
-      this.duration = duration;
-      this.callback = callback;
-      this.timerEvent = null;
-      this.timerText = null;
-    }
-  
-    createTimerText(x, y, style) {
-      this.timerText = this.scene.add.text(x, y, '', style);
-    }
-  
-    updateTimerText() {
-      if (this.timerText) {
-        const remainingTime = Math.max(0, this.timerEvent.getRemainingSeconds());
-        this.timerText.setText(`Time: ${remainingTime.toFixed(2)}`);
-      }
-    }
-    
-    getCurrentTime() {
-      if (this.timerEvent) {
-        return Math.max(0, this.duration - this.timerEvent.getElapsed());
-      }
-      return 0;
-    }
-  
-    start() {
-      this.timerEvent = this.scene.time.addEvent({
-        delay: this.duration,
-        callback: this.callback,
-        callbackScope: this.scene,
-        loop: false
-      });
-    }
-  
-    stop() {
-      if (this.timerEvent) {
-        this.timerEvent.remove();
-      }
-    }
+class Timer {
+  constructor() {
+    this.startTime = 0;
+    this.endTime = 0;
+    this.timerId = null;
   }
+
+  start() {
+    this.startTime = new Date().getTime();
+    this.endTime = this.startTime + 5000; // 5 seconds
+    this.timerId = setInterval(() => {
+      const currentTime = new Date().getTime();
+      const remainingTime = this.endTime - currentTime;
+      if (remainingTime <= 0) {
+        this.stop();
+      }
+    }, 1000);
+  }
+
+  stop() {
+    clearInterval(this.timerId);
+  }
+
+  getTime() {
+    const currentTime = new Date().getTime();
+    //const remainingTime = this.endTime - currentTime;
+    return currentTime
+  }
+}
+module.exports = Timer;
