@@ -128,6 +128,7 @@ export default class MainScene extends Phaser.Scene {
         const timerTextStyle = { font: '24px Arial', fill: '#ffffff' };
         this.timer.createTimerText(10, 10, timerTextStyle);
         this.light = this.add.image(20, 60, 'red')
+        this.light.setScrollFactor(0);
         this.light.setScale(0.2, 0.2)
         
         // Start the timer
@@ -179,11 +180,15 @@ export default class MainScene extends Phaser.Scene {
         // This function will be called when the timer duration is reached
         this.redLight = ! this.redLight;
         if (this.redLight == false){
+            this.light.destroy();
             this.light = this.add.image(20, 60, 'green')
             this.light.setScale(0.2, 0.2)
+            this.light.setScrollFactor(0);
         } else{
+            this.light.destroy();
             this.light = this.add.image(20, 60, 'red')
             this.light.setScale(0.2, 0.2)
+            this.light.setScrollFactor(0);
         }
         console.log('redlight: ', this.redLight);
         this.timer.start()

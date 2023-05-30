@@ -5,7 +5,7 @@ export default class LeaderboardScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.bitmapFont('pressStart', './fonts/PressStart2P.bmp');
+        
     }
 
     create() {
@@ -55,7 +55,6 @@ export default class LeaderboardScene extends Phaser.Scene {
             });
 
         this.add.text(300, 10, 'Leaderboard', { fontSize: '69px', align:'center', fontFamily:"pressStart" });
-        this.add.bitmapText(300, 300, 'pressStart', 'Hello World');
     }
 
     update() {
