@@ -162,6 +162,10 @@ export default class MainScene extends Phaser.Scene {
             if (this.player.oldPosition && (x !== this.player.oldPosition.x || y !== this.player.oldPosition.y)){
                 console.log("emitted!");
                 this.socket.emit('heDothMoveth', {x : this.player.x, y : this.player.y});
+                if (this.redLight = true){
+                    // add code to kill player
+                    console.log("player ded")
+                }
             }
             
             this.player.oldPosition = {
