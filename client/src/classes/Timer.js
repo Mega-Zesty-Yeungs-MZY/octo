@@ -5,10 +5,12 @@ export default class Timer {
     this.callback = callback;
     this.timerEvent = null;
     this.timerText = null;
+    this.scrollFactor = 0;
   }
 
   createTimerText(x, y, style) {
     this.timerText = this.scene.add.text(x, y, '', style);
+    this.timerText.setScrollFactor(this.scrollFactor);
   }
 
   updateTimerText() {
@@ -23,6 +25,13 @@ export default class Timer {
       return Math.max(0, this.duration - this.timerEvent.getElapsed());
     }
     return 0;
+  }
+
+  setScrollFactor(factor) {
+    this.scrollFactor = factor;
+    if (this.timerText) {
+      this.timerText.setScrollFactor(this.scrollFactor);
+    }
   }
 
   start() {

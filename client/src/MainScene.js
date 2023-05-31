@@ -126,7 +126,8 @@ export default class MainScene extends Phaser.Scene {
 
         // Create and position the timer text
         const timerTextStyle = { font: '24px Arial', fill: '#ffffff' };
-        this.timer.createTimerText(10, 10, timerTextStyle);
+        this.timer.createTimerText(10, 10., timerTextStyle);
+        this.timer.setScrollFactor(0); // Fully scrolls with the camera
 
         // light
         this.light = this.add.image(20, 60, 'red')
@@ -145,7 +146,7 @@ export default class MainScene extends Phaser.Scene {
     }
     update() {
         this.timer.updateTimerText(); 
-        
+
         if (this.player) { // Check if player object is defined before updating
             console.log(this.staminaBarFill.width);
             this.player.update();
