@@ -5,7 +5,7 @@ export class ObstaclesClass  {
     this.playerGroup = playerGroup;
 
     // creates + adds obstacles to the group
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 50; i++) {
       const obstacle = this.createObstacle();
       this.obstaclesGroup.add(obstacle);
     }
@@ -64,8 +64,8 @@ export class ObstaclesClass  {
     const minY = obstacle.displayHeight / 2;
     const maxY = height - obstacle.displayHeight / 2;
 
-    const randomX = Phaser.Math.Between(minX, maxX);
-    const randomY = Phaser.Math.Between(minY, maxY);
+    const randomX = Phaser.Math.Between(10, 1000);
+    const randomY = Phaser.Math.Between(10, 4000);
 
     obstacle.setPosition(randomX, randomY);
   }
