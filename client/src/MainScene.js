@@ -1,7 +1,7 @@
 import io from 'socket.io-client';
 // import background from './assets/background.png';
 import player from './assets/player.png';
-import obstacle from './assets/obstacle.png'
+import obstacle from './assets/teleportation1.png'
 import { ObstaclesClass } from './classes/ObstaclesClass.js';
 import PlayerClass from './classes/PlayerClass.js';
 import Timer from './classes/Timer.js';
@@ -25,7 +25,7 @@ export default class MainScene extends Phaser.Scene {
         console.log('preload')
         this.load.spritesheet('player', player, { frameWidth: 48, frameHeight: 48 }); 
         // this.load.image('grass', background);
-        this.load.image('obstacle', obstacle)
+        this.load.image('teleportation1', obstacle)
         this.load.image('red', redLight)
         this.load.image('green', greenLight)
         this.load.image('grassTileset', grassTileset);
@@ -103,7 +103,7 @@ export default class MainScene extends Phaser.Scene {
        
         //!
         
-        this.obstacle = this.physics.add.sprite(400, 300, 'obstacle');    
+        this.obstacle = this.physics.add.sprite(400, 300, 'teleportation1');    
         this.obstacle.setScale(0.1, 0.1);
         
         
@@ -234,3 +234,4 @@ export default class MainScene extends Phaser.Scene {
         }
       }
 }
+//
