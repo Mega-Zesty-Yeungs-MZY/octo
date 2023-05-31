@@ -1,3 +1,4 @@
+import octopus from './assets/octopus.png';
 export default class MenuScene extends Phaser.Scene {
     constructor() {
       super('menuScene');
@@ -5,12 +6,12 @@ export default class MenuScene extends Phaser.Scene {
 
     init() {
         // Initialize scene (or pass parameters to scene)
-        
+        this.config = this.sys.game.config;
     }
   
     preload() {
       // Preload assets for the menu scene
-
+        this.load.image('background', octopus);
     }
   
     create() {
@@ -18,23 +19,20 @@ export default class MenuScene extends Phaser.Scene {
         // Get the button element
         // const switchButton = document.getElementById('switchButton');
         const thisScene = this;
-        // // Add an event listener to the button
-        // switchButton.addEventListener('click', function() {
-        //     // Switch to the leaderboard scene
-        //     thisScene.scene.start('MainScene');
-        //     switchButton.style.display = 'none';
-        // });
+        // Add background image
+        const backgroundImage = this.add.image(0, 0, 'background').setOrigin(0, 0);
+        backgroundImage.setScale(this.config.width / backgroundImage.width, this.config.height / backgroundImage.height);
         //game title
         this.add.text(
-            400, 
-            100, 
+            this.config.width / 2 - 200, 
+            this.config.height / 2 - 200, 
             'Octo Games', 
             { fontSize: '64px', fill: '#fff' });
 
         // if user clicks on the text, switch scnee
         this.add.text(
-            400,
-            200,
+           this.config.width / 2 - 100,
+            this.config.height / 2 - 100,
             'Click to start',
             { fontSize: '32px', fill: '#fff' }
         ).setInteractive().on('pointerdown', () => {
