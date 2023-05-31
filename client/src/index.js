@@ -7,7 +7,7 @@ const config = {
     height: 800,
     backgroundColor: '#333333',
     type: Phaser.AUTO,
-    scene: [LeaderboardScene],
+    scene: [MainScene],
     physics: {
         default: 'arcade',
         matter: {
