@@ -46,7 +46,7 @@ export default class MainScene extends Phaser.Scene {
         // this.bg.x = this.bg.displayWidth/2;
         // this.bg.y = this.bg.displayHeight/2;
         this.physics.world.setBounds(0, 0, 1024, 4096, true, true, true , true)
-        this.socket = io('http://localhost:3000', { transports: ['websocket'] });
+        this.socket = io('http://octogameserver.duckdns.org', { transports: ['websocket'] });
 
         this.socket.on('connect', function () {
             console.log('Connected!');
