@@ -11,7 +11,7 @@ export default class LeaderboardScene extends Phaser.Scene {
     create() {
         
         
-        const url = 'http://127.0.0.1:8086/api/leaderboards/';
+        const url = 'https://octolb.duckdns.org/api/leaderboards/';
 
         fetch(url)
             .then(response => response.json())
