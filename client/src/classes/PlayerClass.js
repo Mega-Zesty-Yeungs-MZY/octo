@@ -9,7 +9,7 @@ let staminaspent = false;
      keyD;
    constructor(scene, x, y, id) {
 
-    super(scene, x, y, 'player', 0);
+    super(scene, 512, 3850, 'player', 0);
     this.playerIdentity = id;
     this.setScale(2);
     this.anims.create({
