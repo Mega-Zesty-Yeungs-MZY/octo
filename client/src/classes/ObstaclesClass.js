@@ -21,7 +21,7 @@ export class ObstaclesClass  {
   }
 
   createObstacle() {
-    const obstacle = this.scene.physics.add.sprite(0, 0, 'obstacle');
+    const obstacle = this.scene.physics.add.sprite(0, 0, 'teleportation');
   
     // some obstacle properties like size, position, scale, etc.
     obstacle.setScale(0.1);
