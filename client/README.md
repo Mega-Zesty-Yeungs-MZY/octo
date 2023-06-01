@@ -17,6 +17,8 @@ Phaser3 is a JavaScript framework for creating games. You can find more informat
 
 - Each scene has a `preload()`, `create()`, and `update()` function. The `preload()` function is used to load assets. The `create()` function is used to create objects. The `update()` function is used to update the game state.
 
+- assets: You can find assets for your game [here](https://opengameart.org/). You can also find assets [here](https://itch.io/game-assets/free). You can also find assets [here](https://www.gameart2d.com/freebies.html). It is highly recommended to use assets that are licensed under the Creative Commons Zero (CC0) license. This license allows you to use the assets for free without having to give credit to the creator. You can find more information about the CC0 license [here](https://creativecommons.org/share-your-work/public-domain/cc0/).
+
 
 
 ```
