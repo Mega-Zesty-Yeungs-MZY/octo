@@ -1,9 +1,22 @@
-# Networking Documentation 
+# Octo Games: Red Light Green Light
+Our latest game is a take on the classic Red Light Green Light. The game is simple, but the fun is endless. The game is played by one person being the "stop light" and the rest of the players being the "cars". The stop light will turn green and the players will move towards the stop light. The stop light will then turn red and the players will stop. If the stop light (when red) catches a player moving, that player is out. The game continues until all cars are out or a car reaches the stop light. The first car to reach the stop light wins.
 
-For our big team of eight, we split up the team into smaller groups, each group responsible for a different component of the multiplayer game. The networking team is/was responsible for running the server locally and being able to create a multiplayer game. Below is the documentation for how we did what we did (what packages we installed, errors we ran into, etc.):
+## Getting Started
+To get started, clone the repo and run `npm install` in the root directory. Then run `npm start` to start the server. The server will be running on port 3000. To start the client, run `npm start` in the client directory. The client will be running on port 8080.
 
+## Prerequisites
+You will need to have Node.js installed on your machine. You can download it [here](https://nodejs.org/en/download/).
 
-First, we began by installing npm, a JavaScript package manager, as a part of getting our node.js server to run locally. Below is the command that we used to first install npm:
+## Framework:
+For the client, we are using Phaser3 to create the game. Phaser3 is a JavaScript framework for creating games. You can find more information about Phaser3 [here](https://phaser.io/phaser3). We are using socket.io for our multiplayer feature. You can find more information about socket.io [here](https://socket.io/).
+
+## Tips on using Phaser3:
+Phaser3 is a JavaScript framework for creating games. You can find more information about Phaser3 [here](https://phaser.io/phaser3). Phaser3 is a very powerful framework, but it can be a little confusing to use at first. Here are some tips to help you get started:
+
+- Phaser3 uses a scene system. Each scene is a different state of the game. For example, the main menu is a scene and the game is a scene. You can find more information about scenes [here](https://photonstorm.github.io/phaser3-docs/Phaser.Scene.html).
+
+- Each scene has a `preload()`, `create()`, and `update()` function. The `preload()` function is used to load assets. The `create()` function is used to create objects. The `update()` function is used to update the game state.
+
 
 
 ```
