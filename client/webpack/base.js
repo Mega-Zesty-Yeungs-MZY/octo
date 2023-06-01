@@ -25,6 +25,11 @@ module.exports = {
       }
     ]
   },
+  devServer: {
+    allowedHosts: [
+      'all',
+    ],
+  },
   plugins: [
     new CleanWebpackPlugin({
       root: path.resolve(__dirname, "../")
